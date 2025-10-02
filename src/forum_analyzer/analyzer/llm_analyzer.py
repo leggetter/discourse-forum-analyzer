@@ -224,8 +224,8 @@ class LLMAnalyzer:
         """Prepare context for topic analysis."""
         context = f"""Topic: {topic.title}
 Created: {topic.created_at}
-Posts: {topic.posts_count}
-Views: {topic.views}
+Posts: {topic.reply_count}
+Views: {topic.view_count}
 Likes: {topic.like_count}
 
 """
@@ -234,7 +234,7 @@ Likes: {topic.like_count}
         for post in posts[:10]:
             context += f"\n--- Post {post.post_number} "
             context += f"by {post.username} ---\n"
-            context += f"{post.raw_content}\n"
+            context += f"{post.raw}\n"
 
         if len(posts) > 10:
             context += f"\n... and {len(posts) - 10} more posts\n"
@@ -264,6 +264,10 @@ Return ONLY valid JSON matching this schema:
 }"""
 
         try:
+            logger.debug(
+                f"Calling Claude API with model: {self.settings.llm_analysis.model}"
+            )
+
             message = self.client.messages.create(
                 model=self.settings.llm_analysis.model,
                 max_tokens=self.settings.llm_analysis.max_tokens,
@@ -272,14 +276,55 @@ Return ONLY valid JSON matching this schema:
                 messages=[{"role": "user", "content": context}],
             )
 
-            # Parse response
-            response_text = message.content[0].text
-            analysis = json.loads(response_text)
+            logger.debug(f"Message object type: {type(message)}")
+            logger.debug(f"Message content: {message.content}")
+
+            # Parse response - handle both list and direct text access
+            if (
+                hasattr(message.content, "__iter__")
+                and len(message.content) > 0
+            ):
+                response_text = message.content[0].text
+            else:
+                logger.error(
+                    f"Unexpected message.content structure: {message.content}"
+                )
+                return None
+
+            logger.debug(f"Response text length: {len(response_text)}")
+            logger.debug(f"Response text preview: {response_text[:200]}")
+
+            # Try to parse JSON, handle potential issues
+            if not response_text or response_text.strip() == "":
+                logger.error("Empty response from Claude API")
+                return None
+
+            # Strip markdown code blocks if present
+            response_text = response_text.strip()
+            if response_text.startswith("```json"):
+                response_text = response_text[7:]  # Remove ```json
+            if response_text.startswith("```"):
+                response_text = response_text[3:]  # Remove ```
+            if response_text.endswith("```"):
+                response_text = response_text[:-3]  # Remove closing ```
+            response_text = response_text.strip()
+
+            logger.debug(f"Cleaned response: {response_text[:200]}")
+
+            try:
+                analysis = json.loads(response_text)
+            except json.JSONDecodeError as je:
+                logger.error(
+                    f"Failed to parse JSON response: {response_text[:500]}"
+                )
+                logger.error(f"JSON error: {je}")
+                return None
 
             return analysis
 
         except Exception as e:
             logger.error(f"Error calling Claude API: {e}")
+            logger.exception(e)  # This will log the full stack trace
             return None
 
     def _store_analysis(
@@ -356,6 +401,17 @@ Return ONLY valid JSON array:
 
             # Parse response
             response_text = message.content[0].text
+
+            # Strip markdown code blocks if present
+            response_text = response_text.strip()
+            if response_text.startswith("```json"):
+                response_text = response_text[7:]  # Remove ```json
+            if response_text.startswith("```"):
+                response_text = response_text[3:]  # Remove ```
+            if response_text.endswith("```"):
+                response_text = response_text[:-3]  # Remove closing ```
+            response_text = response_text.strip()
+
             themes = json.loads(response_text)
 
             return themes

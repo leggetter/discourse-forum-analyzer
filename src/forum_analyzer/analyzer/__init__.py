@@ -1,6 +1,6 @@
 """Analyzer module for forum data analysis."""
 
 from .llm_analyzer import LLMAnalyzer
-from .reporter import ForumReporter
+from .reporter import ForumAnalyzer
 
-__all__ = ["ForumReporter", "LLMAnalyzer"]
+__all__ = ["ForumAnalyzer", "LLMAnalyzer"]
