@@ -1,0 +1,2170 @@
+{
+  "timestamp": "2025-10-02T09:00:58.757507Z",
+  "data": {
+    "users": [
+      {
+        "id": 3,
+        "username": "Liam-Shopify",
+        "name": "Liam Griffin",
+        "avatar_template": "/user_avatar/community.shopify.dev/liam-shopify/{size}/6_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "admin": true,
+        "trust_level": 4
+      },
+      {
+        "id": 10644,
+        "username": "Mudassar_Tariq",
+        "name": "Mudassar Tariq",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/m/839c29/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 5636,
+        "username": "Alan_G",
+        "name": "Alan ",
+        "avatar_template": "/user_avatar/community.shopify.dev/alan_g/{size}/5321_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "admin": true,
+        "moderator": true,
+        "trust_level": 4
+      },
+      {
+        "id": 1330,
+        "username": "Gordon_Kihn",
+        "name": "Gordon  Kihn",
+        "avatar_template": "/user_avatar/community.shopify.dev/gordon_kihn/{size}/1299_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 10228,
+        "username": "Kellan-Shopify",
+        "name": "",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/k/2bfe46/{size}.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "admin": true,
+        "moderator": true,
+        "trust_level": 4
+      },
+      {
+        "id": 5606,
+        "username": "Jonida_Mersinllari",
+        "name": "Jonida Mersinllari",
+        "avatar_template": "/user_avatar/community.shopify.dev/jonida_mersinllari/{size}/5282_2.png",
+        "trust_level": 2
+      },
+      {
+        "id": 10688,
+        "username": "Jaspreet_Singh",
+        "name": "Jaspreet Singh",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/j/b4bc9f/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 45,
+        "username": "Dylan",
+        "name": "Dylan Pierce",
+        "avatar_template": "/user_avatar/community.shopify.dev/dylan/{size}/90_2.png",
+        "flair_name": "community_hero",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/c/c121d8c44e8fa78c33696290c71e02a28a3a6f38.png",
+        "flair_group_id": 46,
+        "trust_level": 4
+      },
+      {
+        "id": 4485,
+        "username": "Josh_C",
+        "name": "",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/j/5f8ce5/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 3563,
+        "username": "chrismgala",
+        "name": "Chris Gala",
+        "avatar_template": "/user_avatar/community.shopify.dev/chrismgala/{size}/3620_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 7230,
+        "username": "Tech_Admin",
+        "name": "Tech Admin",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/t/a87d85/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 10227,
+        "username": "not.sadsciencee",
+        "name": "david hollenbeck",
+        "avatar_template": "/user_avatar/community.shopify.dev/not.sadsciencee/{size}/10294_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "trust_level": 4
+      },
+      {
+        "id": 6722,
+        "username": "aih_kimg",
+        "name": "",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/a/97f17d/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 7551,
+        "username": "epplerdev",
+        "name": "Bryce Eppler",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/e/58f4c7/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 9591,
+        "username": "khaledAtKeaz",
+        "name": "Khale",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/k/50afbb/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 5635,
+        "username": "KyleG-Shopify",
+        "name": "Kyle Giesbrecht",
+        "avatar_template": "/user_avatar/community.shopify.dev/kyleg-shopify/{size}/6799_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "admin": true,
+        "moderator": true,
+        "trust_level": 4
+      },
+      {
+        "id": 36,
+        "username": "Patrick_Jakubik",
+        "name": "Patrick Jakubik",
+        "avatar_template": "/user_avatar/community.shopify.dev/patrick_jakubik/{size}/7603_2.png",
+        "trust_level": 2
+      },
+      {
+        "id": 145,
+        "username": "bkspace",
+        "name": "Sammy Isseyegh",
+        "avatar_template": "/user_avatar/community.shopify.dev/bkspace/{size}/4501_2.png",
+        "flair_name": "community_hero",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/c/c121d8c44e8fa78c33696290c71e02a28a3a6f38.png",
+        "flair_group_id": 46,
+        "trust_level": 3
+      },
+      {
+        "id": 10624,
+        "username": "alexbouchard",
+        "name": "Alexandre Bouchard",
+        "avatar_template": "/user_avatar/community.shopify.dev/alexbouchard/{size}/10690_2.png",
+        "trust_level": 0
+      },
+      {
+        "id": 10541,
+        "username": "saravanan_gr",
+        "name": "saravanan gr",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/s/71c47a/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 10493,
+        "username": "Minh_V_ng_Cu",
+        "name": "Minh Vương Cù",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/m/9fc348/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 925,
+        "username": "hunkybill",
+        "name": "David Lazar",
+        "avatar_template": "/user_avatar/community.shopify.dev/hunkybill/{size}/907_2.png",
+        "trust_level": 2
+      },
+      {
+        "id": 1599,
+        "username": "JT_Kang",
+        "name": "JT Kang",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/j/3ec8ea/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 661,
+        "username": "Jake_Goodman",
+        "name": "Jake Goodman",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/j/e9bcb4/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 940,
+        "username": "AdminGh",
+        "name": "Administratie Grehamer",
+        "avatar_template": "/user_avatar/community.shopify.dev/admingh/{size}/10558_2.png",
+        "trust_level": 2
+      },
+      {
+        "id": 6415,
+        "username": "Developer",
+        "name": "Temp Mail",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/d/bcef8e/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 830,
+        "username": "Eric_Han",
+        "name": "Eric Han",
+        "avatar_template": "/user_avatar/community.shopify.dev/eric_han/{size}/802_2.png",
+        "trust_level": 2
+      },
+      {
+        "id": 251,
+        "username": "kyle_liu",
+        "name": "kyle liu",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/k/fbc32d/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 3524,
+        "username": "Taj_Bowness",
+        "name": "Taj Bowness",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/t/ed8c4c/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 10445,
+        "username": "AveShops",
+        "name": "",
+        "avatar_template": "/user_avatar/community.shopify.dev/aveshops/{size}/10496_2.png",
+        "trust_level": 0
+      },
+      {
+        "id": 848,
+        "username": "Paco-Shopify",
+        "name": "Paco",
+        "avatar_template": "/user_avatar/community.shopify.dev/paco-shopify/{size}/824_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "trust_level": 2
+      },
+      {
+        "id": 3700,
+        "username": "Viral_Mandaliya",
+        "name": "Viral Mandaliya",
+        "avatar_template": "/user_avatar/community.shopify.dev/viral_mandaliya/{size}/6669_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 320,
+        "username": "Daniel_Ablestar",
+        "name": "Daniel Beck",
+        "avatar_template": "/user_avatar/community.shopify.dev/daniel_ablestar/{size}/332_2.png",
+        "trust_level": 4
+      },
+      {
+        "id": 220,
+        "username": "Anthony_SL",
+        "name": "Anthony Vita",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/a/e495f1/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 1920,
+        "username": "Stan_Andrus",
+        "name": "Stan Andrus",
+        "avatar_template": "/user_avatar/community.shopify.dev/stan_andrus/{size}/1882_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 1054,
+        "username": "cbella",
+        "name": "C Bella - Shopify",
+        "avatar_template": "/user_avatar/community.shopify.dev/cbella/{size}/1069_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "trust_level": 1
+      },
+      {
+        "id": 2581,
+        "username": "Merchbees",
+        "name": "Mete",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/m/a5b964/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 10148,
+        "username": "Ricardo_Silva",
+        "name": "Ricardo Silva",
+        "avatar_template": "/user_avatar/community.shopify.dev/ricardo_silva/{size}/10502_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 52,
+        "username": "Luke",
+        "name": "Luke Spoor",
+        "avatar_template": "/user_avatar/community.shopify.dev/luke/{size}/210_2.png",
+        "flair_name": "community_hero",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/c/c121d8c44e8fa78c33696290c71e02a28a3a6f38.png",
+        "flair_group_id": 46,
+        "trust_level": 4
+      },
+      {
+        "id": 2490,
+        "username": "gunner",
+        "name": "Gunner",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/g/258eb7/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 2663,
+        "username": "Jamal_Ali",
+        "name": "Jamal Ali",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/j/898d66/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 1011,
+        "username": "Francois_Rulliere",
+        "name": "Garnet Marketplace",
+        "avatar_template": "/user_avatar/community.shopify.dev/francois_rulliere/{size}/2567_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 9436,
+        "username": "kudze",
+        "name": "Karolis Kraujelis",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/k/c37758/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 1206,
+        "username": "Yuri_K",
+        "name": "Yuri",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/y/41988e/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 345,
+        "username": "JordanFinners",
+        "name": "Jordan",
+        "avatar_template": "/user_avatar/community.shopify.dev/jordanfinners/{size}/6616_2.png",
+        "flair_name": "Build_Award_Winners",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/a/a4d90cc790dffa4b3ceccd020ca1cc53f39da852.png",
+        "flair_group_id": 43,
+        "trust_level": 4
+      },
+      {
+        "id": 10192,
+        "username": "nmodin",
+        "name": "Niklas Modin",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/n/ac8455/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 1237,
+        "username": "sandro",
+        "name": "",
+        "avatar_template": "/user_avatar/community.shopify.dev/sandro/{size}/5391_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 1855,
+        "username": "tanay",
+        "name": "Tanay Agrawal",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/t/4da419/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 1255,
+        "username": "Liz-Shopify",
+        "name": "",
+        "avatar_template": "/user_avatar/community.shopify.dev/liz-shopify/{size}/1243_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "trust_level": 1
+      },
+      {
+        "id": 906,
+        "username": "Narayanan_K",
+        "name": "Narayanan K",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/n/a3d4f5/{size}.png",
+        "trust_level": 2
+      },
+      {
+        "id": 202,
+        "username": "Rishabh_Tayal",
+        "name": "Rishabh Tayal",
+        "avatar_template": "/user_avatar/community.shopify.dev/rishabh_tayal/{size}/237_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 6184,
+        "username": "Lynn-srs",
+        "name": "",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/l/958977/{size}.png",
+        "trust_level": 1
+      },
+      {
+        "id": 10271,
+        "username": "Sanjeev_Kapoor",
+        "name": "Sanjeev Kapoor",
+        "avatar_template": "https://avatars.discourse-cdn.com/v4/letter/s/dfb087/{size}.png",
+        "trust_level": 0
+      },
+      {
+        "id": 2213,
+        "username": "airhorns",
+        "name": "Harry Brundage",
+        "avatar_template": "/user_avatar/community.shopify.dev/airhorns/{size}/2168_2.png",
+        "trust_level": 1
+      },
+      {
+        "id": 1015,
+        "username": "Dave-Shopify",
+        "name": "",
+        "avatar_template": "/user_avatar/community.shopify.dev/dave-shopify/{size}/996_2.png",
+        "flair_name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_group_id": 42,
+        "admin": true,
+        "moderator": true,
+        "trust_level": 1
+      }
+    ],
+    "primary_groups": [],
+    "flair_groups": [
+      {
+        "id": 42,
+        "name": "Shopifolk",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/1X/ec9f1b88b7b08ce0e849170110b1a52fd8f2c403.png",
+        "flair_bg_color": "",
+        "flair_color": ""
+      },
+      {
+        "id": 46,
+        "name": "community_hero",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/c/c121d8c44e8fa78c33696290c71e02a28a3a6f38.png",
+        "flair_bg_color": "",
+        "flair_color": ""
+      },
+      {
+        "id": 43,
+        "name": "Build_Award_Winners",
+        "flair_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/a/a4d90cc790dffa4b3ceccd020ca1cc53f39da852.png",
+        "flair_bg_color": "",
+        "flair_color": ""
+      }
+    ],
+    "topic_list": {
+      "can_create_topic": false,
+      "more_topics_url": "/c/webhooks-and-events/18?page=1",
+      "per_page": 30,
+      "top_tags": [
+        "troubleshooting",
+        "configuring",
+        "orders-and-returns",
+        "customising",
+        "products-and-variant",
+        "inventory",
+        "access-scopes",
+        "app-billing",
+        "metafieldsmetaobject",
+        "subscription"
+      ],
+      "topics": [
+        {
+          "fancy_title": "About the Webhooks and Events category",
+          "id": 66,
+          "title": "About the Webhooks and Events category",
+          "slug": "about-the-webhooks-and-events-category",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2024-09-26T09:01:04.083Z",
+          "last_posted_at": "2024-10-22T13:57:32.858Z",
+          "bumped": true,
+          "bumped_at": "2024-09-30T09:44:50.265Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": true,
+          "unpinned": null,
+          "excerpt": "Topics covering webhook creation &amp; management, event handling, Pub/Sub, and Eventbridge, in Shopify apps.",
+          "visible": true,
+          "closed": true,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "configuring",
+            "customising"
+          ],
+          "tags_descriptions": {},
+          "views": 133,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Liam-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest single",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 3,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Best Practice for Webhooks to Sync All Market Changes(including language)",
+          "id": 23279,
+          "title": "Best Practice for Webhooks to Sync All Market Changes(including language)",
+          "slug": "best-practice-for-webhooks-to-sync-all-market-changes-including-language",
+          "posts_count": 3,
+          "reply_count": 1,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-30T06:52:59.004Z",
+          "last_posted_at": "2025-10-02T06:59:23.235Z",
+          "bumped": true,
+          "bumped_at": "2025-10-02T06:59:23.235Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi everyone, \nIm developing a geolocation app that needs to keep a local database of a stores markets perfecly in sync. My goal is to make this process fully automated for the merchant, so they never have to click a manu&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 50,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Mudassar_Tariq",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10644,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 5636,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "The product publication event was not triggered.",
+          "id": 23109,
+          "title": "The product publication event was not triggered.",
+          "slug": "the-product-publication-event-was-not-triggered",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": "https://global.discourse-cdn.com/shopifycommunity/original/2X/5/589ba1baed98ce23c7fc7c517aff6a345e9e34e4.png",
+          "created_at": "2025-09-26T06:18:50.028Z",
+          "last_posted_at": "2025-10-01T19:35:52.221Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T19:35:52.221Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I subscribed to webhooks related to product publication. When I modify the publishing configuration for a product—such as including or excluding the Online Store—it doesn’t trigger a publication event. What’s going on h&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 40,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Kellan-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 1330,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster, Accepted Answer",
+              "user_id": 10228,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Fire a Shopify API before app uninstall",
+          "id": 23382,
+          "title": "Fire a Shopify API before app uninstall",
+          "slug": "fire-a-shopify-api-before-app-uninstall",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": null,
+          "created_at": "2025-10-01T18:00:07.239Z",
+          "last_posted_at": "2025-10-01T18:55:04.551Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T18:55:04.551Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hello there, \nWe would need to reset a Shopify settings configuration when the app is uninstalled, but for obvious reasons, we cannot do this on the uninstall webhook (the access token is expired already). \nThe use case &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 32,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Kellan-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 5606,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 10228,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Is there a way to send emails/sms via shopify api programmatically?",
+          "id": 23356,
+          "title": "Is there a way to send emails/sms via shopify api programmatically?",
+          "slug": "is-there-a-way-to-send-emails-sms-via-shopify-api-programmatically",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": null,
+          "created_at": "2025-10-01T13:53:21.980Z",
+          "last_posted_at": "2025-10-01T14:20:02.984Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T14:20:02.984Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Like emitting an event to shopify to send sms/customer",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "customising"
+          ],
+          "tags_descriptions": {},
+          "views": 8,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Dylan",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 10688,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 45,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            }
+          ]
+        },
+        {
+          "fancy_title": "Filtered products/update fails with multiple metafields",
+          "id": 23346,
+          "title": "Filtered products/update fails with multiple metafields",
+          "slug": "filtered-products-update-fails-with-multiple-metafields",
+          "posts_count": 1,
+          "reply_count": 0,
+          "highest_post_number": 1,
+          "image_url": null,
+          "created_at": "2025-10-01T10:27:36.942Z",
+          "last_posted_at": "2025-10-01T10:27:37.016Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T10:27:37.016Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I’m running into a weird one with a filtered products/update webhook and would love a sanity check from the community. \nWhat I’m trying to do \nI want products/update to fire only when the product has a metafield custom.t&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "customising",
+            "products-and-variant"
+          ],
+          "tags_descriptions": {},
+          "views": 6,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Josh_C",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest single",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 4485,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Incorrect Selling Plan Payment Terms",
+          "id": 23269,
+          "title": "Incorrect Selling Plan Payment Terms",
+          "slug": "incorrect-selling-plan-payment-terms",
+          "posts_count": 3,
+          "reply_count": 2,
+          "highest_post_number": 4,
+          "image_url": "https://global.discourse-cdn.com/shopifycommunity/optimized/2X/b/be74330c30741c6f0b289a5b35bb0af134843519_2_1024x499.jpeg",
+          "created_at": "2025-09-30T00:24:37.064Z",
+          "last_posted_at": "2025-10-01T07:45:35.349Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T07:45:35.349Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I’ve got a Try Before You Buy (TBYB) app which uses Selling Plans. A new customer of mine recently setup their Selling Plan Group and Selling Plan with a remainingBalanceChargeTimeAfterCheckoutof 30 days. \nWhen I purchas&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "orders-and-returns"
+          ],
+          "tags_descriptions": {},
+          "views": 14,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "chrismgala",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 3563,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 3,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Retrigger previous ORDERS_FULFILLED Webhook(s)",
+          "id": 23316,
+          "title": "Retrigger previous ORDERS_FULFILLED Webhook(s)",
+          "slug": "retrigger-previous-orders-fulfilled-webhook-s",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": null,
+          "created_at": "2025-09-30T23:36:37.127Z",
+          "last_posted_at": "2025-10-01T03:48:11.837Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T03:48:11.837Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi All, \nI was wondering if there is a way to send a webhook payload for the ORDERS_FULFILLED Webhook. \nWe had some issues where the Webhook Payload wasn’t written to file locally and I now need to recreate that file so &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "orders-and-returns"
+          ],
+          "tags_descriptions": {},
+          "views": 10,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "not.sadsciencee",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 7230,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 10227,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "How to validate datetime upon checkout and block if the validation fails",
+          "id": 23320,
+          "title": "How to validate datetime upon checkout and block if the validation fails",
+          "slug": "how-to-validate-datetime-upon-checkout-and-block-if-the-validation-fails",
+          "posts_count": 1,
+          "reply_count": 0,
+          "highest_post_number": 1,
+          "image_url": "https://global.discourse-cdn.com/shopifycommunity/optimized/2X/a/ae66769e2ed2cddeed7d0dcdb969bc0789318677_2_1024x634.png",
+          "created_at": "2025-10-01T02:09:39.265Z",
+          "last_posted_at": "2025-10-01T02:09:39.327Z",
+          "bumped": true,
+          "bumped_at": "2025-10-01T02:09:39.327Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi, \nMy store needs to get the current datetime that the Checkout’s page built-in “Pay Now” button (or “Complete order&quot; button) was clicked and compare that date with the current product’s sale end period. \nFor example: \n&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "orders-and-returns",
+            "customising"
+          ],
+          "tags_descriptions": {},
+          "views": 4,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "aih_kimg",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest single",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 6722,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "# Sales Channel with Contextual Product Feeds - &ldquo;Not Compatible with Markets&rdquo; Warning",
+          "id": 23211,
+          "title": "# Sales Channel with Contextual Product Feeds - \"Not Compatible with Markets\" Warning",
+          "slug": "sales-channel-with-contextual-product-feeds-not-compatible-with-markets-warning",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": null,
+          "created_at": "2025-09-28T20:03:45.644Z",
+          "last_posted_at": "2025-09-30T17:02:27.385Z",
+          "bumped": true,
+          "bumped_at": "2025-09-30T17:02:27.385Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hello! \nWe’ve built a sales channel app that uses contextual product feeds to sync products for Canadian merchants. We use cart permalinks to direct users to the products on the merchant’s shop. \nWe are aiming to achieve&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "access-scopes",
+            "products-and-variant",
+            "inventory"
+          ],
+          "tags_descriptions": {},
+          "views": 8,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Alan_G",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 7551,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 5636,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Incident with delay in receipt of checkout webhook subscriptions",
+          "id": 22407,
+          "title": "Incident with delay in receipt of checkout webhook subscriptions",
+          "slug": "incident-with-delay-in-receipt-of-checkout-webhook-subscriptions",
+          "posts_count": 5,
+          "reply_count": 2,
+          "highest_post_number": 5,
+          "image_url": null,
+          "created_at": "2025-09-10T14:34:54.722Z",
+          "last_posted_at": "2025-09-29T19:27:22.977Z",
+          "bumped": true,
+          "bumped_at": "2025-09-29T19:27:22.977Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hello, \nWe noticed a strange case where a specific checkout that was created at 28/08/2025 was only received on our end via checkouts/createwebhook on 06/09/2025 along with all the subsequent checkouts/updateevents. \nThi&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 30,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "KyleG-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 9591,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster, Accepted Answer",
+              "user_id": 5635,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Google Pub/Sub vs Amazon EventBridge - which to choose?",
+          "id": 23216,
+          "title": "Google Pub/Sub vs Amazon EventBridge - which to choose?",
+          "slug": "google-pub-sub-vs-amazon-eventbridge-which-to-choose",
+          "posts_count": 4,
+          "reply_count": 2,
+          "highest_post_number": 5,
+          "image_url": null,
+          "created_at": "2025-09-29T04:33:16.064Z",
+          "last_posted_at": "2025-09-29T15:34:12.544Z",
+          "bumped": true,
+          "bumped_at": "2025-09-29T15:34:12.544Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hey, I’m evaluating a move from HTTP webhooks to either Google Pub/Sub or Amazon EventBridge + SQS for my app. Since I’m not locked into any particular cloud ecosystem and will just be pulling messages from workers witho&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 20,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "alexbouchard",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 36,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 145,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 10624,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Discount Type &amp; Line-Item Discount Details",
+          "id": 23103,
+          "title": "Discount Type & Line-Item Discount Details",
+          "slug": "discount-type-line-item-discount-details",
+          "posts_count": 3,
+          "reply_count": 1,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-26T06:18:36.398Z",
+          "last_posted_at": "2025-09-26T10:12:53.234Z",
+          "bumped": true,
+          "bumped_at": "2025-09-26T10:12:53.234Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Dear Shopify Support Team, \nWe are using the LookUp API to fetch details on a line-item basis. However, for some line items, we are not receiving the discount code, even though it exists in Shopify. This information is c&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 16,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "saravanan_gr",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10541,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 3,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Deprecated API calls, endpoint WebhookSubscription.privateMetafieldNamespaces",
+          "id": 23131,
+          "title": "Deprecated API calls, endpoint WebhookSubscription.privateMetafieldNamespaces",
+          "slug": "deprecated-api-calls-endpoint-webhooksubscription-privatemetafieldnamespaces",
+          "posts_count": 1,
+          "reply_count": 0,
+          "highest_post_number": 1,
+          "image_url": "https://global.discourse-cdn.com/shopifycommunity/optimized/2X/3/371a122cf2b555745e1d5c64db10a5f16ba3dce6_2_1024x211.png",
+          "created_at": "2025-09-26T10:12:41.159Z",
+          "last_posted_at": "2025-09-26T10:12:41.209Z",
+          "bumped": true,
+          "bumped_at": "2025-09-26T10:12:41.209Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I saw a warning about deprecated APIs in the app dashboard. I have updated the metafield update method as required and added shorthand according to the docs. However, there’s still one endpoint that was detected as no&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 3,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Minh_V_ng_Cu",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest single",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10493,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Old Question looking for new Answer",
+          "id": 23085,
+          "title": "Old Question looking for new Answer",
+          "slug": "old-question-looking-for-new-answer",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-25T17:35:58.595Z",
+          "last_posted_at": "2025-09-25T20:33:05.518Z",
+          "bumped": true,
+          "bumped_at": "2025-09-25T20:33:05.518Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Old Apps continue to haunt. \nSay you have a 10 year old App with 1000 users and they all have the orders/paid webhook. \nSay you are updating to 2025 NOW and you want that in your TOML to let Shopify deal with. FINE. Anyo&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 20,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Kellan-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 925,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 10228,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Question Regarding Webhook for Returns Created via returnCreateMutation",
+          "id": 2748,
+          "title": "Question Regarding Webhook for Returns Created via returnCreateMutation",
+          "slug": "question-regarding-webhook-for-returns-created-via-returncreatemutation",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2024-11-20T13:21:36.939Z",
+          "last_posted_at": "2025-09-24T19:34:40.176Z",
+          "bumped": true,
+          "bumped_at": "2025-09-24T19:34:40.176Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi, \nI have a question regarding the webhook for returns. \nIt seems there isn’t a topic for returns/create. \nSo, is it not possible to receive a webhook for returns created through returnCreateMutation? Or can I receive &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "orders-and-returns"
+          ],
+          "tags_descriptions": {},
+          "views": 50,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "AdminGh",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 1599,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 661,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 940,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Duplicate Webhook Received",
+          "id": 14148,
+          "title": "Duplicate Webhook Received",
+          "slug": "duplicate-webhook-received",
+          "posts_count": 9,
+          "reply_count": 4,
+          "highest_post_number": 9,
+          "image_url": null,
+          "created_at": "2025-04-24T11:00:12.133Z",
+          "last_posted_at": "2025-09-24T14:34:48.485Z",
+          "bumped": true,
+          "bumped_at": "2025-09-24T14:34:48.485Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi Everyone, We were working on webhooks but were occasionally receiving duplicate webhooks. What is the response waiting time for webhooks?",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 80,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Dylan",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 6415,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 830,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 251,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 3524,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 45,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            }
+          ]
+        },
+        {
+          "fancy_title": "Updating webhook versions in Legacy Public App migrating to CLI",
+          "id": 22946,
+          "title": "Updating webhook versions in Legacy Public App migrating to CLI",
+          "slug": "updating-webhook-versions-in-legacy-public-app-migrating-to-cli",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-23T00:22:01.154Z",
+          "last_posted_at": "2025-09-23T18:30:00.888Z",
+          "bumped": true,
+          "bumped_at": "2025-09-23T18:30:00.888Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I have a legacy public app that hasn’t yet been migrated to the CLI system. My app previously used the REST API to create webhook subscriptions on each store that installed the app. The webhook subscriptions’ API version&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 18,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "AveShops",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10445,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 848,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Product Update Webhook Not Triggered When Updating Variant Metafield",
+          "id": 15252,
+          "title": "Product Update Webhook Not Triggered When Updating Variant Metafield",
+          "slug": "product-update-webhook-not-triggered-when-updating-variant-metafield",
+          "posts_count": 10,
+          "reply_count": 5,
+          "highest_post_number": 11,
+          "image_url": "https://global.discourse-cdn.com/shopifycommunity/optimized/2X/1/13d349eea66937a068fae9b6c6c623c796db7710_2_1023x537.png",
+          "created_at": "2025-05-14T07:17:45.760Z",
+          "last_posted_at": "2025-09-23T14:10:12.289Z",
+          "bumped": true,
+          "bumped_at": "2025-09-23T14:10:12.289Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "It seems that the product update webhook is not triggered when only a variant metafield is updated. Based on expected behavior, I believe the webhook should be triggered even when changes are made solely to variant-level&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "products-and-variant"
+          ],
+          "tags_descriptions": {},
+          "views": 152,
+          "like_count": 4,
+          "has_summary": false,
+          "last_poster_username": "KyleG-Shopify",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 3700,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 251,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 320,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 220,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 5635,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Webhook for Inventory OnHand change",
+          "id": 6531,
+          "title": "Webhook for Inventory OnHand change",
+          "slug": "webhook-for-inventory-onhand-change",
+          "posts_count": 5,
+          "reply_count": 2,
+          "highest_post_number": 5,
+          "image_url": null,
+          "created_at": "2025-01-22T11:03:44.591Z",
+          "last_posted_at": "2025-09-22T09:49:33.067Z",
+          "bumped": true,
+          "bumped_at": "2025-09-22T09:49:33.067Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Dear shopify dev team \nIs there any webhook topic for inventory OnHand change? Or any plans to add it? inventory_levels/update only fires for ‘available’",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "inventory"
+          ],
+          "tags_descriptions": {},
+          "views": 61,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Stan_Andrus",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 1920,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 1054,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 2581,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Product webhook - Not working when changing Variant",
+          "id": 22880,
+          "title": "Product webhook - Not working when changing Variant",
+          "slug": "product-webhook-not-working-when-changing-variant",
+          "posts_count": 2,
+          "reply_count": 0,
+          "highest_post_number": 2,
+          "image_url": null,
+          "created_at": "2025-09-21T19:18:54.374Z",
+          "last_posted_at": "2025-09-22T07:57:06.966Z",
+          "bumped": true,
+          "bumped_at": "2025-09-22T07:57:06.966Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hello, \nI have Products webhooks working long time ago, but now it is not firing when I change a variant of a product. \nThe field for this example is the “Cost per Item“. \nIf I change Price, SKU, Compare-at-price, or oth&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 16,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Luke",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 10148,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster, Accepted Answer",
+              "user_id": 52,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            }
+          ]
+        },
+        {
+          "fancy_title": "Webhook filter by metafield",
+          "id": 17301,
+          "title": "Webhook filter by metafield",
+          "slug": "webhook-filter-by-metafield",
+          "posts_count": 6,
+          "reply_count": 0,
+          "highest_post_number": 6,
+          "image_url": null,
+          "created_at": "2025-06-15T14:11:51.587Z",
+          "last_posted_at": "2025-09-21T22:42:57.312Z",
+          "bumped": true,
+          "bumped_at": "2025-09-21T22:42:57.312Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hey all, \nIs it possible to add a webhook filter to the products/update topic, where it filters based on a product metafield value? \nThe docs don’t clearly say whether you can or not. \nIn short, my app only cares about u&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "customising",
+            "products-and-variant"
+          ],
+          "tags_descriptions": {},
+          "views": 101,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Jamal_Ali",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster, Accepted Answer",
+              "user_id": 2490,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 3,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 2663,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Get webhook with metafields using shopify.app.toml",
+          "id": 10655,
+          "title": "Get webhook with metafields using shopify.app.toml",
+          "slug": "get-webhook-with-metafields-using-shopify-app-toml",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-03-10T15:04:12.591Z",
+          "last_posted_at": "2025-09-21T15:17:46.447Z",
+          "bumped": true,
+          "bumped_at": "2025-09-21T15:17:46.447Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Following this guide, we can create webhook topics with the shopify.app.toml. \nHowever I can’t find a way to include metafields in the webhook payload, similar to metafieldNamespaces in the webhookSubscriptionsCreate API&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 85,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "kudze",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 1011,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 320,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 9436,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Question about products/update webhook after increasing product variants to 2048",
+          "id": 22855,
+          "title": "Question about products/update webhook after increasing product variants to 2048",
+          "slug": "question-about-products-update-webhook-after-increasing-product-variants-to-2048",
+          "posts_count": 3,
+          "reply_count": 1,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-20T09:32:28.687Z",
+          "last_posted_at": "2025-09-20T17:49:36.610Z",
+          "bumped": true,
+          "bumped_at": "2025-09-20T17:49:36.610Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I have a question regarding the recent announcement that products will soon support up to 2048 variants. \nIn our application, we use the products/update webhook to track changes in variant fields. Currently, the webhook &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "products-and-variant"
+          ],
+          "tags_descriptions": {},
+          "views": 21,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "Yuri_K",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 1206,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 345,
+              "primary_group_id": null,
+              "flair_group_id": 43
+            }
+          ]
+        },
+        {
+          "fancy_title": "Web hook configuration",
+          "id": 22598,
+          "title": "Web hook configuration",
+          "slug": "web-hook-configuration",
+          "posts_count": 4,
+          "reply_count": 2,
+          "highest_post_number": 4,
+          "image_url": null,
+          "created_at": "2025-09-14T15:00:22.804Z",
+          "last_posted_at": "2025-09-20T10:55:07.013Z",
+          "bumped": true,
+          "bumped_at": "2025-09-20T10:55:07.013Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "It seems that a lot of config of the applications have changed. \nThere used to be a configuration page where you could configure what web-hooks you were interested in along with the URL of your endpoint receiving it. \nI &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 45,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "nmodin",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10192,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 45,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            }
+          ]
+        },
+        {
+          "fancy_title": "Webhooks URLs are not updating with server-restarts",
+          "id": 1977,
+          "title": "Webhooks URLs are not updating with server-restarts",
+          "slug": "webhooks-urls-are-not-updating-with-server-restarts",
+          "posts_count": 8,
+          "reply_count": 2,
+          "highest_post_number": 8,
+          "image_url": null,
+          "created_at": "2024-11-07T07:54:11.844Z",
+          "last_posted_at": "2025-09-18T15:10:39.836Z",
+          "bumped": true,
+          "bumped_at": "2025-09-18T15:10:39.836Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Hi :wave:t4: \nI’m currently building a Shopify app and have some struggles with webhooks. My webhook URLs are not updated. \nI use the remix template. I start my server with shopify app dev --config &lt;FILENAME&gt; \nSometimes &hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 348,
+          "like_count": 2,
+          "has_summary": false,
+          "last_poster_username": "Rishabh_Tayal",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": null,
+              "description": "Original Poster",
+              "user_id": 1237,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 1855,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 1255,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 906,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": "latest",
+              "description": "Most Recent Poster",
+              "user_id": 202,
+              "primary_group_id": null,
+              "flair_group_id": null
+            }
+          ]
+        },
+        {
+          "fancy_title": "Webhooks not getting registered",
+          "id": 22774,
+          "title": "Webhooks not getting registered",
+          "slug": "webhooks-not-getting-registered",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-17T19:37:48.509Z",
+          "last_posted_at": "2025-09-17T20:22:49.226Z",
+          "bumped": true,
+          "bumped_at": "2025-09-17T20:22:49.226Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "I am using the new Dev Platform for apps. The webhook subscriptions are defined in shopify.app.toml file. App is not registering webhook subscriptions on app install. When calling the following graphql API to check for w&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting",
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 30,
+          "like_count": 2,
+          "has_summary": false,
+          "last_poster_username": "Rishabh_Tayal",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 202,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 145,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            }
+          ]
+        },
+        {
+          "fancy_title": "High frequency of orders/updated",
+          "id": 22521,
+          "title": "High frequency of orders/updated",
+          "slug": "high-frequency-of-orders-updated",
+          "posts_count": 3,
+          "reply_count": 0,
+          "highest_post_number": 3,
+          "image_url": null,
+          "created_at": "2025-09-12T08:09:28.677Z",
+          "last_posted_at": "2025-09-17T08:04:12.110Z",
+          "bumped": true,
+          "bumped_at": "2025-09-17T08:04:12.110Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "We were initially using orders/paid to sync orders to our ERP. This worked fine except that Channable orders would not trigger this webhook and thus not get synced. We swapped over to orders/updated and do some filtering&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "troubleshooting"
+          ],
+          "tags_descriptions": {},
+          "views": 22,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Lynn-srs",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 6184,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 5635,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Partner App Settings",
+          "id": 22692,
+          "title": "Partner App Settings",
+          "slug": "partner-app-settings",
+          "posts_count": 4,
+          "reply_count": 0,
+          "highest_post_number": 4,
+          "image_url": null,
+          "created_at": "2025-09-16T17:54:29.389Z",
+          "last_posted_at": "2025-09-17T00:43:10.331Z",
+          "bumped": true,
+          "bumped_at": "2025-09-17T00:43:10.331Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Where can I find App Settings on the partner dashboard for setting the application or redirect URL? I could locate it one time by clicking Settings on the App Page, but no longer see it. \nNote - I see the app in my dev s&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 63,
+          "like_count": 1,
+          "has_summary": false,
+          "last_poster_username": "Sanjeev_Kapoor",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": true,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 10271,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster, Accepted Answer",
+              "user_id": 10228,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        },
+        {
+          "fancy_title": "Please send subscription ID or Client ID with webhook payloads?",
+          "id": 14951,
+          "title": "Please send subscription ID or Client ID with webhook payloads?",
+          "slug": "please-send-subscription-id-or-client-id-with-webhook-payloads",
+          "posts_count": 6,
+          "reply_count": 3,
+          "highest_post_number": 6,
+          "image_url": null,
+          "created_at": "2025-05-08T15:08:57.850Z",
+          "last_posted_at": "2025-09-15T22:04:17.357Z",
+          "bumped": true,
+          "bumped_at": "2025-09-15T22:04:17.357Z",
+          "archetype": "regular",
+          "unseen": false,
+          "pinned": false,
+          "unpinned": null,
+          "excerpt": "Currently Shopify sends identifying information about the shopify store that a webhook payload is for, but it doesn’t send which Shopify Client ID or which webhook subscription caused the webhook to be delivered. This in&hellip;",
+          "visible": true,
+          "closed": false,
+          "archived": false,
+          "bookmarked": null,
+          "liked": null,
+          "tags": [
+            "configuring"
+          ],
+          "tags_descriptions": {},
+          "views": 49,
+          "like_count": 0,
+          "has_summary": false,
+          "last_poster_username": "airhorns",
+          "category_id": 18,
+          "pinned_globally": false,
+          "featured_link": null,
+          "has_accepted_answer": false,
+          "can_vote": false,
+          "posters": [
+            {
+              "extras": "latest",
+              "description": "Original Poster, Most Recent Poster",
+              "user_id": 2213,
+              "primary_group_id": null,
+              "flair_group_id": null
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 45,
+              "primary_group_id": null,
+              "flair_group_id": 46
+            },
+            {
+              "extras": null,
+              "description": "Frequent Poster",
+              "user_id": 1015,
+              "primary_group_id": null,
+              "flair_group_id": 42
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "headers": {
+    "rate_limit": null,
+    "rate_limit_remaining": null,
+    "rate_limit_reset": null,
+    "content_type": null
+  }
+}

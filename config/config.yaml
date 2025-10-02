@@ -1,0 +1,31 @@
+# Shopify Forum Analyzer Configuration
+
+# API Settings
+api:
+  base_url: "https://community.shopify.dev"
+  rate_limit: 1.0  # requests per second
+  timeout: 30.0  # seconds
+  max_retries: 3
+
+# Database Settings
+database:
+  url: "sqlite:///data/database/forum.db"
+  echo: false  # SQL logging
+
+# Scraping Settings
+scraping:
+  batch_size: 100  # topics per batch
+  checkpoint_interval: 10  # save checkpoint every N items
+  checkpoint_dir: "data/checkpoints"
+  
+# Categories to scrape
+categories:
+  - id: 18
+    name: "Webhooks and Events"
+    slug: "webhooks-and-events"
+    
+# Logging Settings
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/forum_analyzer.log"
