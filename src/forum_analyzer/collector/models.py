@@ -1,5 +1,6 @@
 """SQLAlchemy ORM models for the forum database."""
 
+import logging
 from datetime import datetime
 
 from sqlalchemy import (
@@ -13,8 +14,11 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     create_engine,
+    inspect,
 )
 from sqlalchemy.orm import DeclarativeBase, relationship, Session
+
+logger = logging.getLogger(__name__)
 
 
 class Base(DeclarativeBase):
@@ -206,6 +210,40 @@ class ProblemTheme(Base):
             f"<ProblemTheme(id={self.id}, theme_name={self.theme_name}, "
             f"topic_count={self.topic_count})>"
         )
+
+
+def migrate_schema(engine):
+    """Ensure all tables exist, creating new ones if needed.
+
+    This function performs automatic schema migration by checking which tables
+    exist and creating any missing ones. It's safe to call multiple times as
+    SQLAlchemy's create_all() is idempotent and only creates missing tables.
+
+    Args:
+        engine: SQLAlchemy engine instance
+    """
+    inspector = inspect(engine)
+    existing_tables = inspector.get_table_names()
+
+    # Tables we expect to exist
+    expected_tables = {
+        "categories",
+        "topics",
+        "posts",
+        "users",
+        "checkpoints",
+        "llm_analysis",
+        "problem_themes",
+    }
+
+    missing_tables = expected_tables - set(existing_tables)
+
+    if missing_tables:
+        logger.info(f"Creating missing tables: {missing_tables}")
+        Base.metadata.create_all(engine)
+        logger.info("Schema migration complete")
+    else:
+        logger.debug("All tables exist, no migration needed")
 
 
 def create_database(database_url: str) -> None:

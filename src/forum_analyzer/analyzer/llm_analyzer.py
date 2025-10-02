@@ -29,6 +29,12 @@ class LLMAnalyzer:
 
         # Create database session using database URL
         engine = create_engine(settings.database.url)
+
+        # Auto-migrate schema if needed
+        from ..collector.models import migrate_schema
+
+        migrate_schema(engine)
+
         self.SessionLocal = sessionmaker(bind=engine)
 
     def analyze_topic(

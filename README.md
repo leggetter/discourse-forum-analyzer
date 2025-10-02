@@ -20,7 +20,7 @@ See [`.plan/PROGRESS_AND_NEXT_STEPS.md`](.plan/PROGRESS_AND_NEXT_STEPS.md) for d
 - [`.plan/`](.plan/) - Planning documents and progress tracking
 - [`.plan/reports/`](.plan/reports/) - Technical reports and validation docs
 - [`reports/`](reports/) - Analysis outputs and generated reports
-- [`schema.sql`](schema.sql) - Database schema reference (see models.py for implementation)
+- [`src/forum_analyzer/collector/models.py`](src/forum_analyzer/collector/models.py:1) - Database schema (SQLAlchemy models)
 
 ## Features
 
@@ -52,7 +52,6 @@ shopify-dev-forum-analyzer/
 ├── tests/                        # Test suite
 ├── scripts/
 │   └── init_db.py               # Database initialization
-├── schema.sql                    # Database schema
 ├── pyproject.toml               # Modern Python packaging
 ├── setup.py                     # Setup script
 └── requirements.txt             # Dependencies
@@ -349,15 +348,28 @@ asyncio.run(main())
 
 ## Database Schema
 
-The database includes tables for:
+The database schema is automatically migrated when you first use LLM analysis features.
+No manual migration is required.
 
-- **categories**: Forum categories
-- **topics**: Discussion topics
-- **posts**: Individual posts
-- **checkpoints**: Scraping progress tracking
-- **users**: User statistics (derived from posts)
+If you want to manually verify or update the schema:
 
-See [`schema.sql`](schema.sql) for the complete schema.
+```bash
+forum-analyzer init-db
+```
+
+The schema includes tables for:
+
+- **Forum data**: `categories`, `topics`, `posts`, `users`
+- **LLM analysis**: `llm_analysis` (per-topic results), `problem_themes` (aggregated themes)
+- **Internal**: `checkpoints` (for resumable operations)
+
+**Auto-Migration:**
+- New tables are automatically created when you run LLM commands
+- Uses SQLAlchemy's metadata system for safe schema updates
+- Only adds missing tables - never modifies or deletes existing data
+- Migration happens transparently on first use of `forum-analyzer llm-analyze`
+
+For the complete schema definition, see the SQLAlchemy models in [`src/forum_analyzer/collector/models.py`](src/forum_analyzer/collector/models.py:1).
 
 ## Configuration
 
