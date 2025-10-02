@@ -48,6 +48,24 @@ class LoggingSettings(BaseSettings):
     file: str = "logs/forum_analyzer.log"
 
 
+class AskSettings(BaseSettings):
+    """Settings for the ask command."""
+
+    context_limit: int = 50
+    cache_queries: bool = True
+
+
+class LLMAnalysisSettings(BaseSettings):
+    """LLM analysis settings."""
+
+    api_key: str = ""
+    model: str = "claude-opus-4"
+    batch_size: int = 10
+    max_tokens: int = 4096
+    temperature: float = 0.0
+    ask: AskSettings = Field(default_factory=AskSettings)
+
+
 class Settings(BaseSettings):
     """Main application settings."""
 
@@ -56,6 +74,7 @@ class Settings(BaseSettings):
     scraping: ScrapingSettings = Field(default_factory=ScrapingSettings)
     categories: List[CategoryConfig] = Field(default_factory=list)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
+    llm_analysis: LLMAnalysisSettings = Field(default_factory=LLMAnalysisSettings)
 
     @classmethod
     def from_yaml(cls, config_path: Path) -> "Settings":
@@ -78,6 +97,7 @@ class Settings(BaseSettings):
                 CategoryConfig(**cat) for cat in config_data.get("categories", [])
             ],
             logging=LoggingSettings(**config_data.get("logging", {})),
+            llm_analysis=LLMAnalysisSettings(**config_data.get("llm_analysis", {})),
         )
 
 

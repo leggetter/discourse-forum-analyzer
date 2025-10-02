@@ -163,6 +163,51 @@ class User(Base):
         return f"<User(username='{self.username}', " f"post_count={self.post_count})>"
 
 
+class LLMAnalysis(Base):
+    """LLM analysis results for topics."""
+
+    __tablename__ = "llm_analysis"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    topic_id = Column(Integer, ForeignKey("topics.id"), nullable=False, unique=True)
+    core_problem = Column(Text)
+    category = Column(String(100))
+    severity = Column(String(50))
+    key_terms = Column(Text)  # JSON
+    root_cause = Column(Text)
+    analyzed_at = Column(DateTime, default=datetime.utcnow)
+    model_version = Column(String(50))
+
+    # Relationship
+    topic = relationship("Topic", backref="llm_analysis")
+
+    def __repr__(self) -> str:
+        return (
+            f"<LLMAnalysis(id={self.id}, topic_id={self.topic_id}, "
+            f"category={self.category})>"
+        )
+
+
+class ProblemTheme(Base):
+    """Aggregated problem themes across topics."""
+
+    __tablename__ = "problem_themes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    theme_name = Column(String(200), nullable=False)
+    description = Column(Text)
+    affected_topic_ids = Column(Text)  # JSON
+    severity_distribution = Column(Text)  # JSON
+    topic_count = Column(Integer, default=0)
+    analyzed_at = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self) -> str:
+        return (
+            f"<ProblemTheme(id={self.id}, theme_name={self.theme_name}, "
+            f"topic_count={self.topic_count})>"
+        )
+
+
 def create_database(database_url: str) -> None:
     """Create all database tables.
 

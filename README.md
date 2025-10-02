@@ -111,13 +111,19 @@ This creates the SQLite database at `data/database/forum.db` with all required t
 
 ### 3. Configure Settings
 
-Edit `config/config.yaml` to customize:
+Copy the example configuration and add your API key:
+
+```bash
+cp config/config.example.yaml config/config.yaml
+```
+
+Edit `config/config.yaml`:
 
 ```yaml
 # API Settings
 api:
-  base_url: "https://community.shopify.dev"  # Note: Use .dev for English content
-  rate_limit: 1.0  # requests per second
+  base_url: "https://community.shopify.dev"
+  rate_limit: 1.0
   timeout: 30.0
   max_retries: 3
 
@@ -130,6 +136,14 @@ categories:
   - id: 18
     name: "Webhooks and Events"
     slug: "webhooks-and-events"
+
+# LLM Analysis (get API key from https://console.anthropic.com)
+llm_analysis:
+  api_key: "your-anthropic-api-key-here"
+  model: "claude-opus-4"
+  batch_size: 10
+  max_tokens: 4096
+  temperature: 0.0
 ```
 
 ### 4. Collect Forum Data
@@ -234,6 +248,78 @@ forum-analyzer clear-checkpoints
 
 # Clear specific category checkpoint
 forum-analyzer clear-checkpoints --category-slug webhooks-and-events
+```
+
+### `forum-analyzer llm-analyze`
+
+Analyze forum topics using Claude API to identify problems.
+
+**Options:**
+- `--limit` - Maximum number of topics to analyze
+- `--force` - Re-analyze already analyzed topics
+- `--topic-id` - Analyze a specific topic by ID
+
+**Examples:**
+```bash
+# Analyze all unanalyzed topics
+forum-analyzer llm-analyze
+
+# Analyze up to 50 topics
+forum-analyzer llm-analyze --limit 50
+
+# Re-analyze all topics
+forum-analyzer llm-analyze --force
+
+# Analyze a specific topic
+forum-analyzer llm-analyze --topic-id 66
+```
+
+**Output:** For each topic, extracts:
+- Core problem description
+- Category (webhook_delivery, webhook_configuration, etc.)
+- Severity (critical, high, medium, low)
+- Key technical terms
+- Root cause analysis
+
+### `forum-analyzer themes`
+
+Identify common problem themes across analyzed topics.
+
+**Options:**
+- `--min-topics` - Minimum number of topics to form a theme (default: 3)
+
+**Examples:**
+```bash
+# Identify themes (minimum 3 topics per theme)
+forum-analyzer themes
+
+# Require more topics per theme
+forum-analyzer themes --min-topics 5
+```
+
+**Output:** Groups related problems into themes with:
+- Theme name and description
+- Affected topic IDs
+- Severity distribution
+- Topic count
+
+### `forum-analyzer ask`
+
+Ask natural language questions about the analyzed forum data.
+
+**Arguments:**
+- `question` - Your question about the forum data
+
+**Options:**
+- `--context-limit` - Max topics to include in context
+
+**Examples:**
+```bash
+# Ask a question
+forum-analyzer ask "What are the most common webhook delivery failures?"
+
+# Limit context for faster responses
+forum-analyzer ask "What authentication issues exist?" --context-limit 20
 ```
 
 ## Programmatic Usage

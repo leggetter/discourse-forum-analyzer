@@ -98,3 +98,31 @@ CREATE INDEX IF NOT EXISTS idx_posts_username ON posts(username);
 CREATE INDEX IF NOT EXISTS idx_posts_created ON posts(created_at);
 CREATE INDEX IF NOT EXISTS idx_checkpoints_category ON checkpoints(category_id);
 CREATE INDEX IF NOT EXISTS idx_checkpoints_status ON checkpoints(status);
+
+-- LLM Analysis Results
+CREATE TABLE IF NOT EXISTS llm_analysis (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    topic_id INTEGER NOT NULL UNIQUE,
+    core_problem TEXT,
+    category TEXT,
+    severity TEXT,
+    key_terms TEXT,  -- JSON array
+    root_cause TEXT,
+    analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    model_version TEXT,
+    FOREIGN KEY (topic_id) REFERENCES topics(id)
+);
+
+CREATE TABLE IF NOT EXISTS problem_themes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    theme_name TEXT NOT NULL,
+    description TEXT,
+    affected_topic_ids TEXT,  -- JSON array of topic_ids
+    severity_distribution TEXT,  -- JSON: {critical: 5, high: 12, ...}
+    topic_count INTEGER DEFAULT 0,
+    analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_llm_analysis_topic ON llm_analysis(topic_id);
+CREATE INDEX IF NOT EXISTS idx_llm_analysis_category ON llm_analysis(category);
+CREATE INDEX IF NOT EXISTS idx_llm_analysis_severity ON llm_analysis(severity);

@@ -43,6 +43,9 @@ data/database/
 *.log
 logs/
 
+# Config
+config/config.yaml
+
 # Checkpoints
 data/checkpoints/*.json
 

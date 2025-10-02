@@ -26,6 +26,7 @@ from forum_analyzer.collector.orchestrator import (
 )
 from forum_analyzer.config.settings import get_settings
 from forum_analyzer.analyzer.reporter import ForumAnalyzer
+from forum_analyzer.analyzer.llm_analyzer import LLMAnalyzer
 
 console = Console()
 
@@ -699,6 +700,241 @@ def patterns():
 
     except Exception as e:
         console.print(f"[red]✗ Pattern detection failed: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.command(name="llm-analyze")
+@click.option(
+    "--limit",
+    type=int,
+    default=None,
+    help="Maximum number of topics to analyze",
+)
+@click.option(
+    "--force",
+    is_flag=True,
+    help="Re-analyze already analyzed topics",
+)
+@click.option(
+    "--topic-id",
+    type=int,
+    default=None,
+    help="Analyze a specific topic by ID",
+)
+def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
+    """Analyze forum topics using Claude API to identify problems.
+
+    Uses AI to analyze topics and extract:
+    - Core problem descriptions
+    - Problem categories
+    - Severity levels
+    - Key technical terms
+    - Root cause analysis
+
+    Examples:
+        forum-analyzer llm-analyze
+        forum-analyzer llm-analyze --limit 50
+        forum-analyzer llm-analyze --topic-id 66
+        forum-analyzer llm-analyze --force
+    """
+    console.print(
+        Panel.fit(
+            "[bold]LLM-Based Problem Analysis[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    db_path = get_db_path()
+    if not db_path.exists():
+        console.print(
+            "[red]✗ Database not found. "
+            "Run 'forum-analyzer collect' first.[/red]"
+        )
+        sys.exit(1)
+
+    settings = get_settings()
+    if not settings.llm_analysis.api_key:
+        console.print("[red]✗ No API key configured.[/red]")
+        console.print(
+            "Please add your Anthropic API key to config/config.yaml"
+        )
+        sys.exit(1)
+
+    try:
+        analyzer = LLMAnalyzer(settings)
+
+        if topic_id:
+            console.print(f"[cyan]Analyzing topic {topic_id}...[/cyan]")
+            result = analyzer.analyze_topic(topic_id, force=force)
+            if result:
+                console.print("[green]✓ Analysis complete[/green]")
+                console.print(
+                    f"\n[bold]Core Problem:[/bold] "
+                    f"{result['core_problem']}"
+                )
+                console.print(f"[bold]Category:[/bold] {result['category']}")
+                console.print(f"[bold]Severity:[/bold] {result['severity']}")
+                console.print(
+                    f"[bold]Key Terms:[/bold] "
+                    f"{', '.join(result['key_terms'])}"
+                )
+            else:
+                console.print(
+                    "[yellow]Topic skipped (already analyzed)[/yellow]"
+                )
+        else:
+            limit_text = f" (limit: {limit})" if limit else ""
+            console.print(
+                f"[cyan]Starting batch analysis{limit_text}...[/cyan]"
+            )
+            results = analyzer.analyze_batch(limit=limit, force=force)
+
+            console.print("\n[green]✓ Analysis complete[/green]")
+            console.print(f"Total topics: {results['total']}")
+            console.print(f"Analyzed: {results['analyzed']}")
+            console.print(f"Skipped: {results['skipped']}")
+            console.print(f"Errors: {results['errors']}")
+
+            if results["categories"]:
+                console.print("\n[bold]Categories:[/bold]")
+                for category, count in results["categories"].items():
+                    console.print(f"  {category}: {count}")
+
+            if results["severities"]:
+                console.print("\n[bold]Severities:[/bold]")
+                for severity, count in results["severities"].items():
+                    console.print(f"  {severity}: {count}")
+
+    except Exception as e:
+        console.print(f"[red]✗ Analysis failed: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.command()
+@click.option(
+    "--min-topics",
+    type=int,
+    default=3,
+    help="Minimum number of topics to form a theme",
+)
+def themes(min_topics: int):
+    """Identify common problem themes across analyzed topics.
+
+    Groups related problems into themes based on LLM analysis results.
+    Requires topics to be analyzed first with 'llm-analyze' command.
+
+    Examples:
+        forum-analyzer themes
+        forum-analyzer themes --min-topics 5
+    """
+    console.print(
+        Panel.fit(
+            "[bold]Problem Theme Identification[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    db_path = get_db_path()
+    if not db_path.exists():
+        console.print(
+            "[red]✗ Database not found. "
+            "Run 'forum-analyzer collect' first.[/red]"
+        )
+        sys.exit(1)
+
+    settings = get_settings()
+    if not settings.llm_analysis.api_key:
+        console.print("[red]✗ No API key configured.[/red]")
+        console.print(
+            "Please add your Anthropic API key to config/config.yaml"
+        )
+        sys.exit(1)
+
+    try:
+        analyzer = LLMAnalyzer(settings)
+
+        console.print(
+            f"[cyan]Identifying themes (min {min_topics} topics)...[/cyan]"
+        )
+        themes_list = analyzer.identify_themes(min_topics=min_topics)
+
+        if not themes_list:
+            console.print("[yellow]No themes identified[/yellow]")
+            return
+
+        console.print(f"\n[green]✓ Found {len(themes_list)} themes[/green]\n")
+
+        for i, theme in enumerate(themes_list, 1):
+            console.print(f"[bold]{i}. {theme['theme_name']}[/bold]")
+            console.print(f"   Description: {theme['description']}")
+            console.print(f"   Topics: {len(theme['affected_topic_ids'])}")
+
+            severity_dist = theme.get("severity_distribution", {})
+            if severity_dist:
+                console.print("   Severity: ", end="")
+                parts = [f"{k}={v}" for k, v in severity_dist.items() if v > 0]
+                console.print(", ".join(parts))
+            console.print()
+
+    except Exception as e:
+        console.print(f"[red]✗ Theme identification failed: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.command()
+@click.argument("question")
+@click.option(
+    "--context-limit",
+    type=int,
+    default=None,
+    help="Maximum number of topics to include in context",
+)
+def ask(question: str, context_limit: Optional[int]):
+    """Ask a question about the analyzed forum data.
+
+    Query the analyzed topics using natural language. Requires topics
+    to be analyzed first with 'llm-analyze' command.
+
+    Examples:
+        forum-analyzer ask "What are the most common webhook problems?"
+        forum-analyzer ask "How many critical issues exist?" --context-limit 20
+    """
+    console.print(
+        Panel.fit(
+            "[bold]Ask Question About Forum Data[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    db_path = get_db_path()
+    if not db_path.exists():
+        console.print(
+            "[red]✗ Database not found. "
+            "Run 'forum-analyzer collect' first.[/red]"
+        )
+        sys.exit(1)
+
+    settings = get_settings()
+    if not settings.llm_analysis.api_key:
+        console.print("[red]✗ No API key configured.[/red]")
+        console.print(
+            "Please add your Anthropic API key to config/config.yaml"
+        )
+        sys.exit(1)
+
+    try:
+        analyzer = LLMAnalyzer(settings)
+
+        console.print(f"[cyan]Question: {question}[/cyan]\n")
+        answer = analyzer.ask_question(question, context_limit)
+
+        console.print(f"[bold]Answer:[/bold]\n{answer}")
+
+    except Exception as e:
+        console.print(f"[red]✗ Question failed: {e}[/red]")
         sys.exit(1)
 
 

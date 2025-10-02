@@ -1,4 +1,5 @@
-# Shopify Forum Analyzer Configuration
+# Example configuration file
+# Copy this to config/config.yaml and update with your settings
 
 # API Settings
 api:
@@ -29,3 +30,16 @@ logging:
   level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: "logs/forum_analyzer.log"
+
+# LLM Analysis Configuration
+llm_analysis:
+  api_key: ""  # Your Anthropic API key (get from https://console.anthropic.com)
+  model: "claude-opus-4"
+  batch_size: 10
+  max_tokens: 4096
+  temperature: 0.0
+  
+  # Ask command settings
+  ask:
+    context_limit: 50  # Max topics to include in context
+    cache_queries: true
