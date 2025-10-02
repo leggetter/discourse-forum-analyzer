@@ -61,3 +61,11 @@ data/database/
 !data/database/.gitkeep
 data/checkpoints/
 !data/checkpoints/.gitkeep
+
+# Temporary files (root level only)
+/test_*.py
+/debug_*.py
+/check_*.py
+
+# Exceptions (keep proper tests)
+!tests/test_*.py

@@ -2,6 +2,26 @@
 
 A Python tool for scraping and analyzing the Shopify Developer Forum (Discourse-based platform).
 
+## Project Status
+
+**Phase 1: Complete ✅**
+- Data collection system fully operational
+- 271 topics, 1,201 posts collected from Shopify Webhooks & Events forum
+- Basic SQL-based analysis implemented
+
+**Phase 2: In Progress 🔄**
+- LLM-based problem analysis using Claude API
+- Identifying common developer problems and themes
+
+See [`.plan/PROGRESS_AND_NEXT_STEPS.md`](.plan/PROGRESS_AND_NEXT_STEPS.md) for detailed status.
+
+## Documentation
+
+- [`.plan/`](.plan/) - Planning documents and progress tracking
+- [`.plan/reports/`](.plan/reports/) - Technical reports and validation docs
+- [`reports/`](reports/) - Analysis outputs and generated reports
+- [`schema.sql`](schema.sql) - Database schema reference (see models.py for implementation)
+
 ## Features
 
 - **Async API Client**: Rate-limited HTTP client with retry logic
@@ -357,7 +377,7 @@ mypy src/
 
 ## API Validation
 
-API validation results are documented in [`API_VALIDATION_REPORT.md`](API_VALIDATION_REPORT.md:1).
+API validation results are documented in [`.plan/reports/API_VALIDATION_REPORT.md`](.plan/reports/API_VALIDATION_REPORT.md).
 
 ## Next Steps
 

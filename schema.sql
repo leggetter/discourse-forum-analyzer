@@ -1,4 +1,11 @@
 -- Shopify Developer Forum Database Schema
+--
+-- This is a REFERENCE DOCUMENT showing the database structure.
+-- Actual tables are created by SQLAlchemy models in:
+--   src/forum_analyzer/collector/models.py
+--
+-- Keep this file for documentation and understanding the data model.
+--
 -- Multi-category support with comprehensive tracking
 
 -- Categories table
