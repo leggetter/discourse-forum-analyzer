@@ -164,3 +164,58 @@ The issue **was**:
 - Automatic redirect to Portuguese locale (`/c/pt-br/`)
 
 **Fix**: Change one line in `api_client.py` from `.com` to `.dev`.
+
+---
+
+## Resolution (October 2, 2025)
+
+### ✅ Fix Implemented
+
+The base URL issue has been successfully resolved:
+
+**Changes Made:**
+
+1. **Updated API Client** ([`api_client.py`](src/forum_analyzer/collector/api_client.py))
+   - Removed hardcoded `BASE_URL` class constant
+   - Added `base_url` as constructor parameter with default `https://community.shopify.dev`
+   - Updated `__aenter__` method to use instance variable
+
+2. **Updated Settings** ([`settings.py`](src/forum_analyzer/config/settings.py))
+   - Changed default `base_url` from `.com` to `.dev`
+
+3. **Updated Orchestrator** ([`orchestrator.py`](src/forum_analyzer/collector/orchestrator.py))
+   - Modified to pass `base_url` from settings to API client
+
+4. **Configuration File** ([`config.yaml`](config/config.yaml))
+   - Already contained correct URL: `https://community.shopify.dev`
+
+### Verification Process
+
+1. **Test Collection (2 pages)**
+   - Collected 60 topics, 266 posts
+   - Verified English content:
+     - "About the Webhooks and Events category"
+     - "Webhooks URLs are not updating with server-restarts"
+     - "Question Regarding Webhook for Returns Created via returnCreateMutation"
+
+2. **Full Collection Results**
+   - **Total Topics:** 271
+   - **Total Posts:** 1,201
+   - **Total Users:** 324
+   - **Date Range:** September 26, 2024 to October 1, 2025
+   - **Database Size:** 1.62 MB
+   - **Language:** English ✅
+
+3. **Analysis Report Generated**
+   - Top keywords: webhook, webhooks, app, shopify, update, product, orders, api
+   - Problem categories: Webhook Delivery (73.1%), General Questions (18.8%), Payload Data (3.7%)
+   - All content confirmed as English technical discussions
+
+### Final Status
+
+✅ **RESOLVED**: The system now correctly collects English content from `https://community.shopify.dev`
+✅ **VERIFIED**: Database contains comprehensive English data from September 2024 to present
+✅ **ANALYSIS**: Generated analysis report shows relevant English technical keywords and topics
+✅ **DOCUMENTED**: All changes documented and configuration updated
+
+The fix was successful and the forum analyzer is now collecting the correct English content from the Shopify Developer Forum.

@@ -96,7 +96,7 @@ Edit `config/config.yaml` to customize:
 ```yaml
 # API Settings
 api:
-  base_url: "https://community.shopify.com"
+  base_url: "https://community.shopify.dev"  # Note: Use .dev for English content
   rate_limit: 1.0  # requests per second
   timeout: 30.0
   max_retries: 3
