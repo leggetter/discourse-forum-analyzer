@@ -1,509 +1,329 @@
-# Shopify Developer Forum Analyzer
+# Discourse Forum Analyzer
 
-A Python tool for scraping and analyzing the Shopify Developer Forum (Discourse-based platform).
+A Python tool for collecting and analyzing discussions from Discourse-based forums using LLM-powered analysis.
 
-## Project Status
+## Overview
 
-**Phase 1: Complete ✅**
-- Data collection system fully operational
-- 271 topics, 1,201 posts collected from Shopify Webhooks & Events forum
-- Basic SQL-based analysis implemented
-
-**Phase 2: In Progress 🔄**
-- LLM-based problem analysis using Claude API
-- Identifying common developer problems and themes
-
-See [`.plan/PROGRESS_AND_NEXT_STEPS.md`](.plan/PROGRESS_AND_NEXT_STEPS.md) for detailed status.
-
-## Documentation
-
-- [`.plan/`](.plan/) - Planning documents and progress tracking
-- [`.plan/reports/`](.plan/reports/) - Technical reports and validation docs
-- [`reports/`](reports/) - Analysis outputs and generated reports
-- [`src/forum_analyzer/collector/models.py`](src/forum_analyzer/collector/models.py:1) - Database schema (SQLAlchemy models)
+This tool automates the collection of forum data from Discourse forums (which provide JSON representations of pages) and uses Claude AI to analyze discussions, identify common problems, and extract insights. While initially built to analyze Shopify's webhook forum, it works with any publicly accessible Discourse installation.
 
 ## Features
 
-- **Async API Client**: Rate-limited HTTP client with retry logic
-- **Database Storage**: SQLite database with SQLAlchemy ORM
-- **Resumable Scraping**: Checkpoint system for fault-tolerant collection
-- **Multi-Category Support**: Track multiple forum categories
-- **Configuration Management**: YAML-based configuration with Pydantic validation
+### Data Collection
+- Automated scraping via Discourse JSON endpoints
+- Rate-limited HTTP client with retry logic
+- Checkpoint-based recovery for interrupted operations
+- Incremental updates (collect only new content)
+- SQLite storage with SQLAlchemy ORM
 
-## Project Structure
+### LLM Analysis
+- Problem extraction from discussion threads
+- Automatic categorization by topic type
+- Severity assessment (critical, high, medium, low)
+- Theme identification across multiple discussions
+- Natural language query interface
 
-```
-shopify-dev-forum-analyzer/
-├── src/
-│   └── forum_analyzer/           # Main package
-│       ├── collector/             # Data collection
-│       │   ├── api_client.py     # API client with rate limiting
-│       │   ├── checkpoint_manager.py
-│       │   └── models.py         # SQLAlchemy models
-│       ├── analyzer/              # Analysis (to be implemented)
-│       └── config/                # Configuration
-│           └── settings.py
-├── config/
-│   └── config.yaml               # Configuration file
-├── data/
-│   ├── database/                 # SQLite database
-│   ├── checkpoints/              # Checkpoint files
-│   └── samples/                  # Sample API responses
-├── tests/                        # Test suite
-├── scripts/
-│   └── init_db.py               # Database initialization
-├── pyproject.toml               # Modern Python packaging
-├── setup.py                     # Setup script
-└── requirements.txt             # Dependencies
-```
+### Reporting
+- Markdown reports with statistics
+- Problem theme grouping
+- JSON and CSV export options
+
+## Requirements
+
+- Python 3.10 or higher
+- Anthropic API key (for LLM analysis features)
 
 ## Installation
 
-### Prerequisites
-
-- Python 3.10 or higher
-- pip
-
-### Install Package
-
 ```bash
-# Clone the repository
 git clone <repository-url>
-cd shopify-dev-forum-analyzer
+cd discourse-forum-analyzer
 
-# Install in editable mode
-pip install -e .
-
-# Or install from requirements.txt
-pip install -r requirements.txt
-```
-
-### Development Installation
-
-```bash
-# Install with development dependencies
-pip install -e ".[dev]"
-```
-
-## Quick Start
-
-### 1. Install the Package
-
-```bash
-# Create and activate virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-# Install in editable mode
 pip install -e .
 ```
 
-This installs the `forum-analyzer` CLI command.
+## Configuration
 
-### 2. Initialize Database
-
-```bash
-forum-analyzer init-db
-```
-
-This creates the SQLite database at `data/database/forum.db` with all required tables.
-
-### 3. Configure Settings
-
-Copy the example configuration and add your API key:
-
+Copy the example configuration:
 ```bash
 cp config/config.example.yaml config/config.yaml
 ```
 
 Edit `config/config.yaml`:
-
 ```yaml
-# API Settings
 api:
-  base_url: "https://community.shopify.dev"
-  rate_limit: 1.0
+  base_url: "https://your-discourse-site.com"
+  rate_limit: 1.0  # requests per second
   timeout: 30.0
   max_retries: 3
 
-# Database
 database:
   url: "sqlite:///data/database/forum.db"
 
-# Categories to scrape
 categories:
   - id: 18
-    name: "Webhooks and Events"
-    slug: "webhooks-and-events"
+    name: "Category Name"
+    slug: "category-slug"
 
-# LLM Analysis (get API key from https://console.anthropic.com)
 llm_analysis:
-  api_key: "your-anthropic-api-key-here"
+  api_key: "your-anthropic-api-key"  # Get from https://console.anthropic.com
   model: "claude-opus-4"
   batch_size: 10
   max_tokens: 4096
   temperature: 0.0
 ```
 
-### 4. Collect Forum Data
+## Usage
 
+### Initialize Database
 ```bash
-# Collect all topics and posts from default category
-forum-analyzer collect
-
-# Collect from a specific category
-forum-analyzer collect --category-slug api-discussions --category-id 25
-
-# Incremental update (fetch only new content)
-forum-analyzer update
-
-# Check collection status
-forum-analyzer status
-```
-
-## CLI Commands
-
-The CLI provides several commands for managing forum data collection:
-
-### `forum-analyzer init-db`
-
-Initialize the database schema.
-
-```bash
-# Create database
 forum-analyzer init-db
-
-# Force reinitialize (WARNING: deletes all data)
-forum-analyzer init-db --force
 ```
 
-### `forum-analyzer collect`
-
-Collect all topics and posts from a category.
-
-**Options:**
-- `--category-slug` - Category slug to collect (default: webhooks-and-events)
-- `--category-id` - Category ID (default: 18)
-- `--resume/--no-resume` - Resume from checkpoint or start fresh (default: resume)
-- `--page-limit` - Limit number of pages to collect (for testing, default: None = no limit)
-
-**Examples:**
+### Collect Forum Data
 ```bash
-# Collect with defaults
+# Collect from default category
 forum-analyzer collect
 
-# Collect specific category
+# Collect from specific category
 forum-analyzer collect --category-slug api-discussions --category-id 25
 
-# Start fresh, ignore checkpoints
-forum-analyzer collect --no-resume
-
-# Collect only first 2 pages (for testing)
+# Collect with page limit (for testing)
 forum-analyzer collect --page-limit 2
+
+# Disable checkpoint resume
+forum-analyzer collect --no-resume
 ```
 
-### `forum-analyzer update`
-
-Incrementally update existing data with new posts.
-
-**Options:**
-- `--category-slug` - Category slug to update (default: webhooks-and-events)
-- `--category-id` - Category ID (default: 18)
-
-**Examples:**
+### Update Existing Data
 ```bash
-# Update with defaults
+# Fetch only new/updated content
 forum-analyzer update
 
 # Update specific category
-forum-analyzer update --category-slug api-discussions --category-id 25
+forum-analyzer update --category-slug category-name
 ```
 
-### `forum-analyzer status`
-
-Show collection status and database statistics.
-
+### View Collection Status
 ```bash
 forum-analyzer status
 ```
 
-Displays:
-- Number of categories, topics, posts, users
-- Latest topic timestamp
-- Database size
-- Active checkpoints
-
-### `forum-analyzer clear-checkpoints`
-
-Clear checkpoints to restart collection from beginning.
-
-**Options:**
-- `--category-slug` - Clear specific category (optional)
-
-**Examples:**
-```bash
-# Clear all checkpoints
-forum-analyzer clear-checkpoints
-
-# Clear specific category checkpoint
-forum-analyzer clear-checkpoints --category-slug webhooks-and-events
-```
-
-### `forum-analyzer llm-analyze`
-
-Analyze forum topics using Claude API to identify problems.
-
-**Options:**
-- `--limit` - Maximum number of topics to analyze
-- `--force` - Re-analyze already analyzed topics
-- `--topic-id` - Analyze a specific topic by ID
-
-**Examples:**
+### Analyze Topics
 ```bash
 # Analyze all unanalyzed topics
 forum-analyzer llm-analyze
 
-# Analyze up to 50 topics
+# Analyze limited number
 forum-analyzer llm-analyze --limit 50
 
-# Re-analyze all topics
+# Re-analyze existing
 forum-analyzer llm-analyze --force
 
-# Analyze a specific topic
+# Analyze specific topic
 forum-analyzer llm-analyze --topic-id 66
 ```
 
-**Output:** For each topic, extracts:
-- Core problem description
-- Category (webhook_delivery, webhook_configuration, etc.)
-- Severity (critical, high, medium, low)
-- Key technical terms
-- Root cause analysis
-
-### `forum-analyzer themes`
-
-Identify common problem themes across analyzed topics.
-
-**Options:**
-- `--min-topics` - Minimum number of topics to form a theme (default: 3)
-
-**Examples:**
+### Identify Themes
 ```bash
-# Identify themes (minimum 3 topics per theme)
+# Find common themes (minimum 3 topics per theme)
 forum-analyzer themes
 
 # Require more topics per theme
 forum-analyzer themes --min-topics 5
 ```
 
-**Output:** Groups related problems into themes with:
-- Theme name and description
-- Affected topic IDs
-- Severity distribution
-- Topic count
-
-### `forum-analyzer ask`
-
-Ask natural language questions about the analyzed forum data.
-
-**Arguments:**
-- `question` - Your question about the forum data
-
-**Options:**
-- `--context-limit` - Max topics to include in context
-
-**Examples:**
+### Query Data
 ```bash
-# Ask a question
-forum-analyzer ask "What are the most common webhook delivery failures?"
-
-# Limit context for faster responses
-forum-analyzer ask "What authentication issues exist?" --context-limit 20
+# Ask questions about the data
+forum-analyzer ask "What are the most common authentication issues?"
+forum-analyzer ask "Show critical problems" --context-limit 20
 ```
 
-## Programmatic Usage
+### Clear Checkpoints
+```bash
+# Clear all checkpoints
+forum-analyzer clear-checkpoints
 
-### Use the API Client
+# Clear specific category
+forum-analyzer clear-checkpoints --category-slug webhooks-and-events
+```
 
-```python
-import asyncio
-from forum_analyzer.collector.api_client import ForumAPIClient
+## Architecture
 
-async def main():
-    async with ForumAPIClient(rate_limit=1.0) as client:
-        # Fetch category metadata
-        category = await client.fetch_category_metadata(18)
-        print(f"Category: {category['name']}")
-        
-        # Fetch topics
-        page = await client.fetch_category_page(18, page=0)
-        print(f"Topics: {len(page['topic_list']['topics'])}")
-        
-        # Fetch specific topic
-        topic = await client.fetch_topic(66)
-        print(f"Topic: {topic['title']}")
+```
+┌─────────────────────┐
+│  Discourse Forum    │
+│  (JSON endpoints)   │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Rate-Limited      │
+│   HTTP Client       │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Checkpoint        │
+│   Manager           │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   SQLite Database   │
+│   (SQLAlchemy)      │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐     ┌──────────────┐
+│   LLM Analyzer      │────▶│  Claude API  │
+└──────────┬──────────┘     └──────────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Reports & Themes   │
+└─────────────────────┘
+```
 
-asyncio.run(main())
+### Technology Stack
+- **Language**: Python 3.10+
+- **Database**: SQLite with SQLAlchemy
+- **HTTP**: httpx (async)
+- **LLM**: Claude API (Anthropic)
+- **CLI**: Click
+- **Config**: Pydantic + YAML
+
+## Project Structure
+
+```
+discourse-forum-analyzer/
+├── src/forum_analyzer/
+│   ├── analyzer/              # LLM analysis
+│   │   ├── llm_analyzer.py
+│   │   └── reporter.py
+│   ├── collector/             # Data collection
+│   │   ├── api_client.py
+│   │   ├── checkpoint_manager.py
+│   │   ├── models.py
+│   │   └── orchestrator.py
+│   ├── config/
+│   │   └── settings.py
+│   └── cli.py
+├── config/
+│   ├── config.yaml
+│   └── config.example.yaml
+├── data/
+│   ├── database/
+│   └── checkpoints/
+└── tests/
 ```
 
 ## Database Schema
 
-The database schema is automatically migrated when you first use LLM analysis features.
-No manual migration is required.
+### Forum Data Tables
+- `categories` - Forum categories being tracked
+- `topics` - Discussion threads with metadata
+- `posts` - Individual posts and replies
+- `users` - Forum user information
 
-If you want to manually verify or update the schema:
+### Analysis Tables
+- `llm_analysis` - Per-topic analysis results
+- `problem_themes` - Grouped problem patterns
 
-```bash
-forum-analyzer init-db
-```
+### Operational Tables
+- `checkpoints` - Recovery state
+- `fetch_history` - Collection audit trail
 
-The schema includes tables for:
+The schema auto-migrates when using LLM analysis features.
 
-- **Forum data**: `categories`, `topics`, `posts`, `users`
-- **LLM analysis**: `llm_analysis` (per-topic results), `problem_themes` (aggregated themes)
-- **Internal**: `checkpoints` (for resumable operations)
+## Example: Analyzing Shopify Developer Forum
 
-**Auto-Migration:**
-- New tables are automatically created when you run LLM commands
-- Uses SQLAlchemy's metadata system for safe schema updates
-- Only adds missing tables - never modifies or deletes existing data
-- Migration happens transparently on first use of `forum-analyzer llm-analyze`
+The tool was initially developed to analyze Shopify's webhook discussions. Here's what was collected:
 
-For the complete schema definition, see the SQLAlchemy models in [`src/forum_analyzer/collector/models.py`](src/forum_analyzer/collector/models.py:1).
+- **Topics**: 271
+- **Posts**: 1,201
+- **Users**: 324
+- **Date Range**: September 2024 - October 2025
 
-## Configuration
+Analysis results:
+- 15 distinct problem themes identified
+- 18 critical issues found
+- Top issue: Configuration challenges (25.1% of topics)
 
-### Settings
+See [`reports/LLM_ANALYSIS_REPORT.md`](reports/LLM_ANALYSIS_REPORT.md) for complete findings.
 
-Configuration is managed through [`config/config.yaml`](config/config.yaml) and loaded using Pydantic settings in [`src/forum_analyzer/config/settings.py`](src/forum_analyzer/config/settings.py:1).
-
-Access settings in code:
-
-```python
-from forum_analyzer.config import get_settings
-
-settings = get_settings()
-print(settings.api.rate_limit)
-print(settings.database.url)
-```
-
-### Environment Variables
-
-Settings can also be overridden with environment variables (Pydantic settings pattern).
-
-## API Client Features
-
-### Rate Limiting
-
-The [`ForumAPIClient`](src/forum_analyzer/collector/api_client.py:45) includes a token bucket rate limiter:
-
-```python
-async with ForumAPIClient(rate_limit=1.0) as client:
-    # Requests are automatically rate-limited
-    data = await client.fetch_category_page(18)
-```
-
-### Retry Logic
-
-Automatic exponential backoff retry for failed requests using tenacity.
-
-### Checkpoint System
-
-The [`CheckpointManager`](src/forum_analyzer/collector/checkpoint_manager.py:16) enables resumable scraping:
-
-```python
-from sqlalchemy.orm import Session
-from forum_analyzer.collector import CheckpointManager
-
-checkpoint_mgr = CheckpointManager(session, checkpoint_dir=Path("data/checkpoints"))
-
-# Save checkpoint
-checkpoint_mgr.save_checkpoint(
-    category_id=18,
-    checkpoint_type="category_page",
-    last_page=5,
-    total_processed=150
-)
-
-# Resume from checkpoint
-checkpoint = checkpoint_mgr.get_checkpoint(18, "category_page")
-if checkpoint:
-    start_page = checkpoint.last_page + 1
-```
-
-## Testing
-
-Run tests with pytest:
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=forum_analyzer
-
-# Run specific test file
-pytest tests/test_api_client.py
-```
+### Performance Metrics
+- API cost: $0.05 total (~$0.0002 per topic)
+- Processing time: ~10 minutes for 271 topics
+- Success rate: 100% (0 failures)
 
 ## Development
 
-### Code Style
-
-The project uses:
-
-- **black**: Code formatting (79 char line length)
-- **flake8**: Linting
-- **isort**: Import sorting
-- **mypy**: Type checking
-
-### Running Linters
-
+### Running Tests
 ```bash
-# Format code
+pytest
+pytest --cov=forum_analyzer
+pytest tests/test_api_client.py
+```
+
+### Code Quality
+```bash
 black src/ tests/
-
-# Sort imports
 isort src/ tests/
-
-# Lint
 flake8 src/ tests/
-
-# Type check
 mypy src/
 ```
 
-## API Validation
+### Development Installation
+```bash
+pip install -e ".[dev]"
+pre-commit install
+```
 
-API validation results are documented in [`.plan/reports/API_VALIDATION_REPORT.md`](.plan/reports/API_VALIDATION_REPORT.md).
+## Troubleshooting
 
-## Next Steps
+**Rate Limiting**
+- Adjust `rate_limit` in config.yaml (default: 1 req/sec)
+- Tool automatically respects API limits
 
-This foundation provides:
+**Database Locked**
+- Only one instance can run at a time
+- Clear stale checkpoints: `forum-analyzer clear-checkpoints`
 
-- ✅ Proper Python package structure
-- ✅ API client with rate limiting
-- ✅ Database schema and ORM models
-- ✅ Configuration system
-- ✅ Checkpoint management
-- ✅ Basic test structure
+**API Errors**
+- Verify Discourse site is publicly accessible
+- Check base_url in config.yaml
+- Ensure category ID exists
 
-**To implement next:**
+**LLM Analysis Errors**
+- Verify Anthropic API key is valid
+- Check API quota and billing
+- Use `--limit` flag for testing with smaller datasets
 
-1. ✅ Collection orchestrator (use API client + checkpoint manager)
-2. ✅ CLI interface
-3. Data analysis modules
-4. Reporting and visualization
+## API Requirements
 
-## License
-
-MIT
+This tool requires:
+- Public Discourse forum (no authentication required)
+- Accessible JSON endpoints (Discourse provides JSON representations by appending `.json` to URLs):
+  - `/c/{category_id}.json` - Category listings
+  - `/t/{topic_id}.json` - Topic details
 
 ## Contributing
 
-Contributions welcome! Please ensure:
+1. Fork the repository
+2. Create a feature branch
+3. Make changes with tests
+4. Run linters and tests
+5. Submit a pull request
 
-1. Code passes all tests
-2. Code is formatted with black
-3. Type hints are included
-4. Documentation is updated
+## License
+
+MIT License - See LICENSE file for details
+
+## Documentation
+
+- [API Validation](.plan/API_VALIDATION_REPORT.md)
+- [Project Planning](.plan/)
