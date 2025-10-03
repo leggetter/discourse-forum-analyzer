@@ -43,7 +43,7 @@ forum-analyzer init-db
 forum-analyzer collect
 
 # Optional: Discover categories from the data (RECOMMENDED before LLM analysis)
-forum-analyzer themes --min-topics 3
+forum-analyzer themes discover --min-topics 3
 
 # Optional: Analyze with LLM using discovered categories (takes ~10 minutes, requires API key)
 forum-analyzer llm-analyze
@@ -161,7 +161,7 @@ View collection report:
 Discover natural categories from the collected data:
 
 ```bash
-forum-analyzer themes --min-topics 3
+forum-analyzer themes discover --min-topics 3
 ```
 
 **What it does:**
@@ -224,7 +224,14 @@ forum-analyzer report llm
 #### Identify Common Themes
 
 ```bash
-forum-analyzer themes
+# Discover themes from analyzed topics
+forum-analyzer themes discover
+
+# List discovered themes
+forum-analyzer themes list
+
+# Delete all themes (prompts for confirmation)
+forum-analyzer themes clean
 ```
 
 Discovers recurring patterns like:

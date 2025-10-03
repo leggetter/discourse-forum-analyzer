@@ -239,17 +239,26 @@ forum-analyzer ask "What are the main authentication issues?"
 
 ### Identify Themes
 ```bash
-# Find common themes (minimum 3 topics per theme)
-forum-analyzer themes
+# Discover common themes (minimum 3 topics per theme)
+forum-analyzer themes discover
 
 # Require more topics per theme
-forum-analyzer themes --min-topics 5
+forum-analyzer themes discover --min-topics 5
 
 # Analyze more topics for pattern discovery
-forum-analyzer themes --context-limit 100
+forum-analyzer themes discover --context-limit 100
 
 # Analyze all topics (if you have many topics, this may be expensive)
-forum-analyzer themes --context-limit 1000
+forum-analyzer themes discover --context-limit 1000
+
+# List discovered themes
+forum-analyzer themes list
+
+# Delete all themes (prompts for confirmation)
+forum-analyzer themes clean
+
+# Delete all themes without confirmation
+forum-analyzer themes clean --force
 ```
 
 ### Analyze Topics

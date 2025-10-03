@@ -830,7 +830,13 @@ def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
         sys.exit(1)
 
 
-@cli.command()
+@cli.group()
+def themes():
+    """Manage problem themes - discover, list, and clean themes."""
+    pass
+
+
+@themes.command(name="discover")
 @click.option(
     "--min-topics",
     type=int,
@@ -843,16 +849,16 @@ def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
     default=None,
     help="Maximum number of topics to analyze for patterns",
 )
-def themes(min_topics: int, context_limit: Optional[int]):
+def themes_discover(min_topics: int, context_limit: Optional[int]):
     """Identify common problem themes across analyzed topics.
 
     Groups related problems into themes based on LLM analysis results.
     Requires topics to be analyzed first with 'llm-analyze' command.
 
     Examples:
-        forum-analyzer themes
-        forum-analyzer themes --min-topics 5
-        forum-analyzer themes --context-limit 100
+        forum-analyzer themes discover
+        forum-analyzer themes discover --min-topics 5
+        forum-analyzer themes discover --context-limit 100
     """
     console.print(
         Panel.fit(
@@ -915,6 +921,157 @@ def themes(min_topics: int, context_limit: Optional[int]):
 
     except Exception as e:
         console.print(f"[red]✗ Theme identification failed: {e}[/red]")
+        sys.exit(1)
+
+
+@themes.command(name="list")
+def themes_list():
+    """Display discovered themes.
+
+    Shows all themes that have been identified through theme discovery,
+    including their names, descriptions, topic counts, and severity
+    distributions.
+
+    Examples:
+        forum-analyzer themes list
+    """
+    console.print(
+        Panel.fit(
+            "[bold]Discovered Themes[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    db_path = get_db_path()
+    if not db_path.exists():
+        console.print(
+            "[red]✗ Database not found. "
+            "Run 'forum-analyzer collect' first.[/red]"
+        )
+        sys.exit(1)
+
+    try:
+        settings = get_settings()
+        engine = create_engine(settings.database.url)
+
+        with Session(engine) as session:
+            from forum_analyzer.collector.models import ProblemTheme
+
+            # Get all themes ordered by topic count (descending)
+            themes_query = select(ProblemTheme).order_by(
+                ProblemTheme.topic_count.desc()
+            )
+            themes_list = list(session.execute(themes_query).scalars().all())
+
+            if not themes_list:
+                console.print(
+                    "[yellow]No themes found. "
+                    "Run 'forum-analyzer themes' first.[/yellow]"
+                )
+                return
+
+            console.print(
+                f"[green]Found {len(themes_list)} theme(s)[/green]\n"
+            )
+
+            for i, theme in enumerate(themes_list, 1):
+                console.print(f"[bold]{i}. {theme.theme_name}[/bold]")
+                console.print(f"   Description: {theme.description}")
+                console.print(f"   Topics: {theme.topic_count}")
+
+                # Parse and display severity distribution
+                if theme.severity_distribution:
+                    import json
+
+                    try:
+                        severity_dist = json.loads(theme.severity_distribution)
+                        if severity_dist and any(
+                            v > 0 for v in severity_dist.values()
+                        ):
+                            console.print("   Severity: ", end="")
+                            parts = [
+                                f"{k}={v}"
+                                for k, v in severity_dist.items()
+                                if v > 0
+                            ]
+                            console.print(", ".join(parts))
+                    except json.JSONDecodeError:
+                        pass
+                console.print()
+
+    except Exception as e:
+        console.print(f"[red]✗ Failed to list themes: {e}[/red]")
+        sys.exit(1)
+
+
+@themes.command(name="clean")
+@click.option(
+    "--force",
+    is_flag=True,
+    help="Skip confirmation prompt",
+)
+def themes_clean(force: bool):
+    """Delete all discovered themes.
+
+    Removes all theme records from the database. This is useful when you want
+    to re-run theme discovery with different parameters or on updated data.
+
+    Examples:
+        forum-analyzer themes clean
+        forum-analyzer themes clean --force  # Skip confirmation
+    """
+    console.print(
+        Panel.fit(
+            "[bold]Delete Themes[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    db_path = get_db_path()
+    if not db_path.exists():
+        console.print(
+            "[red]✗ Database not found. "
+            "Run 'forum-analyzer collect' first.[/red]"
+        )
+        sys.exit(1)
+
+    try:
+        settings = get_settings()
+        engine = create_engine(settings.database.url)
+
+        with Session(engine) as session:
+            from forum_analyzer.collector.models import ProblemTheme
+
+            # Count existing themes
+            theme_count = (
+                session.scalar(select(func.count()).select_from(ProblemTheme))
+                or 0
+            )
+
+            if theme_count == 0:
+                console.print("[yellow]No themes found to delete.[/yellow]")
+                return
+
+            # Confirm deletion unless --force is used
+            if not force:
+                if not click.confirm(
+                    f"This will delete all {theme_count} discovered theme(s). "
+                    "Are you sure?",
+                    default=False,
+                ):
+                    console.print("[yellow]Aborted.[/yellow]")
+                    return
+
+            # Delete all themes
+            session.query(ProblemTheme).delete()
+            session.commit()
+
+            console.print(f"[green]✓ Deleted {theme_count} theme(s)[/green]")
+
+    except Exception as e:
+        console.print(f"[red]✗ Failed to delete themes: {e}[/red]")
         sys.exit(1)
 
 

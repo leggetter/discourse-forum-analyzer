@@ -261,29 +261,20 @@ Current implementation requires users to manually define categories in config BE
    - **Impact:** Low (functional, but no feedback during processing)
    - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py:859-861)
 
-3. **Missing CLI Commands for Testing & Maintenance**
-   - **Issue:** No CLI commands to clear themes or LLM analysis results
-   - **Current Workaround:** Requires manual Python scripts to clear data for testing:
-     ```python
-     # Must use direct database access
-     from sqlalchemy import delete
-     session.execute(delete(ProblemTheme))  # Clear themes
-     session.execute(delete(LLMAnalysis))   # Clear analysis
-     ```
-   - **Enhancement:** Add CLI commands for common maintenance tasks:
+3. **✅ Theme Management CLI Commands** _(IMPLEMENTED)_
+   - **Status:** Implemented as `themes` command group with subcommands
+   - **Implementation:** Added theme management commands:
      ```bash
-     forum-analyzer clear-themes         # Clear all discovered themes
-     forum-analyzer clear-analysis       # Clear LLM analysis results
-     forum-analyzer clear-all --confirm  # Clear all analyzed data
+     forum-analyzer themes discover      # Identify themes (original functionality)
+     forum-analyzer themes list          # List discovered themes
+     forum-analyzer themes clean         # Delete all themes (with confirmation)
      ```
-   - **Use Cases:**
-     - Testing new analysis approaches
-     - Re-analyzing with updated prompts
-     - Resetting before re-running themes discovery
-     - Debugging analysis issues
-   - **Impact:** Medium (makes testing/debugging much easier)
-   - **Effort:** 2-3 hours
-   - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py) - Add new commands similar to `clear-checkpoints`
+   - **Features:**
+     - `themes list` - Displays themes with topic counts and severity distributions
+     - `themes clean` - Prompts for confirmation before deletion (use `--force` to skip)
+     - Consistent with existing CLI patterns (e.g., `clear-checkpoints`)
+   - **Note:** Still pending: commands to clear LLM analysis results
+   - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py) - Lines 833-1059
 
 ### Architectural Flexibility Considerations
 
