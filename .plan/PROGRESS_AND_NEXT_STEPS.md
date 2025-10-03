@@ -181,6 +181,100 @@
    - Automated issue creation in tracking systems
    - Developer documentation improvements
 
+
+## ⚠️ Known Limitations & Enhancement Opportunities
+
+### UX Improvements Identified During Testing
+
+1. **Progress Indicators for Long-Running Operations**
+   - **Issue:** `llm-analyze` command is silent during processing (271 API calls ~10 minutes)
+   - **Current Behavior:** Shows start message, then no feedback until completion
+   - **Enhancement:** Add Rich Progress bar with:
+     - Current topic being analyzed
+     - Percentage complete
+     - ETA for completion
+   - **Impact:** Low (functional, but poor UX during long operations)
+   - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py:786-791)
+
+2. **Theme Identification Progress Feedback**
+   - **Issue:** `themes` command silent during Claude API call
+   - **Current Behavior:** Shows start message, then waits for API response
+   - **Enhancement:** Add progress indicator or spinner during API call
+   - **Impact:** Low (functional, but no feedback during processing)
+   - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py:859-861)
+
+### Architectural Flexibility Considerations
+
+3. **LLM Analysis Prompt Configurability**
+   - **Current State:** Multiple aspects of the analysis prompt are **hard-coded**
+   - **Hard-coded Elements:**
+     - **Context:** "analyzing developer forum posts" (line 246-247)
+     - **Categories:** Fixed list of 7 webhook-specific categories (lines 251-252)
+       - `webhook_delivery`, `webhook_configuration`, `event_handling`
+       - `rate_limiting`, `authentication`, `documentation`, `other`
+     - **Analysis Focus:** "identify problems that need solving" (line 247)
+     - **Output Schema:** Fixed fields for problem analysis (lines 250-255)
+   - **Limitations for Other Use Cases:**
+     - Can't analyze non-developer forums (e.g., customer support, community)
+     - Can't change analysis goal (e.g., feature requests, positive feedback)
+     - Can't adapt categories to different domains (e.g., API, mobile SDKs)
+     - Can't modify output schema for different insights
+   - **Enhancement Approach:**
+     - **Step 1 (Minimal):** Make categories configurable in `config.yaml`
+     - **Step 2 (Recommended):** Add prompt template configuration:
+       ```yaml
+       llm_analysis:
+         context: "developer forum posts"  # or "customer support tickets"
+         goal: "identify problems that need solving"  # or "extract feature requests"
+         categories:
+           - webhook_delivery
+           - webhook_configuration
+           # ... custom categories
+         output_schema:
+           core_problem: "Clear problem description"
+           category: "Category from list"
+           # ... custom fields
+       ```
+     - **Step 3 (Advanced):** Full prompt templating with Jinja2
+       - Store prompts as templates in `config/prompts/`
+       - Allow complete customization for any forum type
+   - **Location:** [`src/forum_analyzer/analyzer/llm_analyzer.py`](../src/forum_analyzer/analyzer/llm_analyzer.py:246-264)
+   - **Priority:** High - current implementation is too specific to Shopify webhooks
+
+### Implementation Notes
+
+**For Progress Indicators:**
+- Both can be implemented using Rich's `Progress` context manager
+- Estimated effort: 2-4 hours for both
+- Would significantly improve UX for production use
+
+**For Prompt Configurability:**
+- Current implementation is **heavily specialized** for Shopify webhook problem analysis
+- To support other forums/use cases, multiple aspects need configuration:
+  
+  **Minimal Implementation (3-5 hours):**
+  - Add `analysis_categories` list to `config.yaml`
+  - Update [`llm_analyzer.py`](../src/forum_analyzer/analyzer/llm_analyzer.py:251-252) to read from config
+  - Keep other prompt elements hard-coded
+  
+  **Recommended Implementation (6-8 hours):**
+  - Extend config schema to include:
+    - `analysis_context` (e.g., "developer forum", "customer support")
+    - `analysis_goal` (e.g., "problems", "feature requests", "sentiment")
+    - `categories` list with descriptions
+    - `output_fields` for customizable schema
+  - Update prompt generation to use all configurable elements
+  - Add validation for output against configured schema
+  
+  **Advanced Implementation (10-15 hours):**
+  - Implement Jinja2 template system for prompts
+  - Create `config/prompts/` directory for templates
+  - Allow complete prompt customization per forum type
+  - Support multiple prompt strategies (problem analysis, sentiment, summarization)
+
+- **Priority:** High - essential for tool generalization beyond Shopify webhooks
+- **Recommendation:** Start with Recommended Implementation for good balance of flexibility and complexity
+
 ---
 
 ## 🛠️ Maintenance Notes
