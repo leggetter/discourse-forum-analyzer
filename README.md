@@ -6,112 +6,7 @@ A Python tool for collecting and analyzing discussions from Discourse-based foru
 
 This tool automates the collection of forum data from Discourse forums (which provide JSON representations of pages) and uses Claude AI to analyze discussions, identify common problems, and extract insights. While initially built to analyze Shopify's webhook forum, it works with any publicly accessible Discourse installation.
 
-**New to this tool?** Start with the [Glossary](#glossary) to understand key terminology.
-## Glossary
-
-Understanding the terminology used in this tool:
-
-### Discourse Forum Terms
-
-**Category**  
-A top-level organizational unit in Discourse forums (e.g., "Webhooks & Events", "API Discussions"). Each category has an ID and slug used for data collection.
-- Database table: [`categories`](src/forum_analyzer/collector/models.py:30)
-- Example: Category ID 18 = "Webhooks & Events"
-
-**Topic**  
-A discussion thread within a category. Contains the initial post and all replies.
-- Database table: [`topics`](src/forum_analyzer/collector/models.py:57)
-- Equivalent to: Thread, Discussion
-- Example: "Webhook delivery failures in production"
-
-**Post**  
-An individual message within a topic. The first post (post_number=1) is the topic starter, subsequent posts are replies.
-- Database table: [`posts`](src/forum_analyzer/collector/models.py:90)
-- Equivalent to: Message, Comment
-- Note: In Discourse, both the initial message and replies are "posts"
-
-**Reply**  
-A response to a topic (technically still a "post" in Discourse terminology, but with post_number > 1).
-- Not a separate table (stored in [`posts`](src/forum_analyzer/collector/models.py:90))
-- Example: Posts 2-N in a topic are replies
-
-**User**  
-A forum member who creates topics and posts.
-- Database table: [`users`](src/forum_analyzer/collector/models.py:154)
-
-### Analysis Terms
-
-**Classification** *(stored as "category" field for backward compatibility)*  
-The LLM-assigned type of problem or discussion in a topic.
-- Database field: [`llm_analysis.category`](src/forum_analyzer/collector/models.py:179)
-- Discovered from: Problem themes identified by LLM
-- Examples: "webhook_delivery", "authentication", "documentation"
-- **Important**: To avoid confusion with forum "categories", documentation refers to this as "classification"
-
-**Theme**  
-A higher-level pattern grouping multiple related topics.
-- Database table: [`problem_themes`](src/forum_analyzer/collector/models.py:195)
-- Discovered by: LLM analyzing all topics collectively
-- Examples: "Webhook Delivery Failures", "HMAC Verification Issues"
-- Relationship: One theme can include topics with different classifications
-
-**Severity**  
-The urgency/impact level assigned to a topic by LLM analysis.
-- Levels: critical, high, medium, low
-- Database field: [`llm_analysis.severity`](src/forum_analyzer/collector/models.py:179)
-
-**Core Problem**  
-A concise description of the main issue discussed in a topic.
-- Database field: [`llm_analysis.core_problem`](src/forum_analyzer/collector/models.py:177)
-
-### Workflow Terms
-
-**Collection**  
-The process of downloading forum data (categories, topics, posts, users) from Discourse.
-- Command: `forum-analyzer collect`
-- Creates checkpoint files for resumable collection
-
-**Analysis**  
-The process of using Claude AI to extract insights from collected topics.
-- Command: `forum-analyzer llm-analyze`
-- Assigns severity, core problem, and classification to each topic
-
-**Theme Identification**  
-The process of grouping analyzed topics into common problem patterns.
-- Command: `forum-analyzer themes`
-- Discovers classifications and themes from collected data
-
-**Checkpoint**  
-A saved progress point during collection, allowing resume after interruption.
-- Database table: [`checkpoints`](src/forum_analyzer/collector/models.py:126)
-- Directory: `data/checkpoints/`
-
-**Migration**  
-Database schema updates to support new features or fix issues.
-- Function: [`migrate_schema()`](src/forum_analyzer/collector/models.py:215)
-- Applied automatically when using LLM analysis features
-
-### Recommended Workflow Terminology
-
-1. **Collect** forum data (categories, topics, posts)
-2. **Identify themes** from topics (discovers classifications)
-3. **Analyze** topics using discovered classifications
-4. **Query** results with natural language
-
-### Quick Reference
-
-| Term | Scope | Meaning |
-|------|-------|------------|
-| Category | Forum | Discourse organizational unit |
-| Topic | Forum | Discussion thread |
-| Post | Forum | Individual message (includes initial post and replies) |
-| Reply | Forum | A post with post_number > 1 |
-| Classification | Analysis | LLM-assigned topic type (stored as "category" field) |
-| Theme | Analysis | Pattern across multiple topics |
-| Severity | Analysis | Impact level (critical/high/medium/low) |
-| Core Problem | Analysis | Concise issue description |
-| Checkpoint | Workflow | Saved progress point for resumable collection |
-
+**New to this tool?** It's recommended to read the [Glossary](#glossary) to understand key terminology.
 
 ## Features
 
@@ -142,7 +37,7 @@ Database schema updates to support new features or fix issues.
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/your-repo/discourse-forum-analyzer.git
 cd discourse-forum-analyzer
 
 python -m venv .venv
@@ -158,141 +53,117 @@ Copy the example configuration:
 cp config/config.example.yaml config/config.yaml
 ```
 
-Edit `config/config.yaml`:
+Edit `config/config.yaml` with your forum's details and your Anthropic API key:
 ```yaml
-api:
-  base_url: "https://your-discourse-site.com"
-  rate_limit: 1.0  # requests per second
-  timeout: 30.0
-  max_retries: 3
-
-database:
-  url: "sqlite:///data/database/forum.db"
-
-categories:
-  - id: 18
-    name: "Category Name"
-    slug: "category-slug"
+discourse:
+  base_url: "https://community.shopify.dev"
+  category_slug: "webhooks-and-events"
+  category_id: 18
 
 llm_analysis:
-  api_key: "your-anthropic-api-key"  # Get from https://console.anthropic.com
-  model: "claude-opus-4"
-  batch_size: 10
-  max_tokens: 4096
-  temperature: 0.0
-  theme_context_limit: 50  # Max topics to analyze for theme discovery
+  api_key: "your-anthropic-api-key"
+  # ... other settings
 ```
 
 ## Usage
 
-### Initialize Database
+### Recommended Workflow
+
+The recommended workflow ensures the most accurate and relevant analysis by first discovering themes from your specific data.
+
 ```bash
+# 1. Initialize the database
 forum-analyzer init-db
-```
 
-### Collect Forum Data
-```bash
-# Collect from default category
+# 2. Collect forum data
 forum-analyzer collect
 
-# Collect from specific category
-forum-analyzer collect --category-slug api-discussions --category-id 25
+# 3. Discover natural categories from the data
+forum-analyzer themes discover --min-topics 3
 
-# Collect with page limit (for testing)
-forum-analyzer collect --page-limit 2
-
-# Disable checkpoint resume
-forum-analyzer collect --no-resume
-```
-
-### Update Existing Data
-```bash
-# Fetch only new/updated content
-forum-analyzer update
-
-# Update specific category
-forum-analyzer update --category-slug category-name
-```
-
-### View Collection Status
-```bash
-forum-analyzer status
-```
-
-### Recommended Analysis Workflow
-
-```bash
-# 1. Collect forum data
-forum-analyzer collect
-
-# 2. Discover natural categories from the data (RECOMMENDED)
-forum-analyzer themes --min-topics 3
-
-# 3. Analyze topics using discovered categories
+# 4. Analyze all topics using the discovered categories
 forum-analyzer llm-analyze
 
-# 4. Query your analysis
+# 5. Ask questions about your analysis
 forum-analyzer ask "What are the main authentication issues?"
 ```
 
-**Note:** Running `themes` before `llm-analyze` allows the LLM to use categories discovered from your actual forum content, rather than generic categories. This produces more relevant and accurate categorization.
+### All Commands
 
-### Identify Themes
+A full list of commands and their options are available below.
+
+#### Database Initialization
+```bash
+# Creates the database schema
+forum-analyzer init-db
+```
+
+#### Data Collection
+```bash
+# Collect from the category in your config
+forum-analyzer collect
+
+# Collect from a specific category
+forum-analyzer collect --category-slug api-discussions --category-id 25
+
+# Collect with a page limit (for testing)
+forum-analyzer collect --page-limit 2
+```
+
+#### Incremental Updates
+```bash
+# Fetch only new/updated content
+forum-analyzer update
+```
+
+#### Status
+```bash
+# View collection status and statistics
+forum-analyzer status
+```
+
+#### Theme Management
 ```bash
 # Discover common themes (minimum 3 topics per theme)
 forum-analyzer themes discover
 
-# Require more topics per theme
-forum-analyzer themes discover --min-topics 5
-
-# Analyze more topics for pattern discovery
+# Analyze more topics for better pattern discovery
 forum-analyzer themes discover --context-limit 100
 
-# Analyze all topics (if you have many topics, this may be expensive)
-forum-analyzer themes discover --context-limit 1000
-
-# List discovered themes
+# List themes already discovered
 forum-analyzer themes list
 
 # Delete all themes (prompts for confirmation)
 forum-analyzer themes clean
-
-# Delete all themes without confirmation
-forum-analyzer themes clean --force
 ```
 
-### Analyze Topics
+#### Topic Analysis
 ```bash
 # Analyze all unanalyzed topics
 forum-analyzer llm-analyze
 
-# Analyze limited number
-forum-analyzer llm-analyze --limit 50
-
-# Re-analyze existing
+# Re-analyze topics that have already been analyzed
 forum-analyzer llm-analyze --force
 
-# Analyze specific topic
+# Analyze a specific topic by its ID
 forum-analyzer llm-analyze --topic-id 66
 ```
 
-### Query Data
+#### Querying
 ```bash
-# Ask questions about the data
+# Ask questions about the analyzed data
 forum-analyzer ask "What are the most common authentication issues?"
-forum-analyzer ask "Show critical problems" --context-limit 20
 ```
 
-### Clear Checkpoints
+#### Maintenance
 ```bash
-# Clear all checkpoints
+# Clear all collection checkpoints
 forum-analyzer clear-checkpoints
-
-# Clear specific category
-forum-analyzer clear-checkpoints --category-slug webhooks-and-events
 ```
 
-## Architecture
+## Technical Details
+
+### Architecture
 
 ```
 ┌─────────────────────┐
@@ -337,21 +208,13 @@ forum-analyzer clear-checkpoints --category-slug webhooks-and-events
 - **CLI**: Click
 - **Config**: Pydantic + YAML
 
-## Project Structure
-
+### Project Structure
 ```
 discourse-forum-analyzer/
 ├── src/forum_analyzer/
 │   ├── analyzer/              # LLM analysis
-│   │   ├── llm_analyzer.py
-│   │   └── reporter.py
 │   ├── collector/             # Data collection
-│   │   ├── api_client.py
-│   │   ├── checkpoint_manager.py
-│   │   ├── models.py
-│   │   └── orchestrator.py
 │   ├── config/
-│   │   └── settings.py
 │   └── cli.py
 ├── config/
 │   ├── config.yaml
@@ -362,29 +225,19 @@ discourse-forum-analyzer/
 └── tests/
 ```
 
-## Database Schema
+### Database Schema
+The schema is managed by SQLAlchemy models and is split into three categories:
 
-### Forum Data Tables
-- `categories` - Forum categories being tracked
-- `topics` - Discussion threads with metadata
-- `posts` - Individual posts and replies
-- `users` - Forum user information
-
-### Analysis Tables
-- `llm_analysis` - Per-topic analysis results
-- `problem_themes` - Grouped problem patterns
-
-### Operational Tables
-- `checkpoints` - Recovery state
-- `fetch_history` - Collection audit trail
+- **Forum Data Tables**: `categories`, `topics`, `posts`, `users`
+- **Analysis Tables**: `llm_analysis`, `problem_themes`
+- **Operational Tables**: `checkpoints`, `fetch_history`
 
 The schema auto-migrates when using LLM analysis features.
 
 ## Example Application: Shopify Developer Forum
 
-This tool was demonstrated by analyzing Shopify's webhook discussions as an example. The same approach works for any Discourse forum.
+This tool was demonstrated by analyzing Shopify's webhook discussions.
 
-**Example dataset:**
 - **Topics**: 271
 - **Posts**: 1,201
 - **Users**: 324
@@ -395,20 +248,13 @@ This tool was demonstrated by analyzing Shopify's webhook discussions as an exam
 - 18 critical issues found
 - Top issue: Configuration challenges (25.1% of topics)
 
-See complete example analysis: [examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md](examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md)
-
-### Performance Metrics
-- API cost: $0.05 total (~$0.0002 per topic)
-- Processing time: ~10 minutes for 271 topics
-- Success rate: 100% (0 failures)
+See the complete example analysis: [examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md](examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md)
 
 ## Development
 
 ### Running Tests
 ```bash
 pytest
-pytest --cov=forum_analyzer
-pytest tests/test_api_client.py
 ```
 
 ### Code Quality
@@ -419,53 +265,65 @@ flake8 src/ tests/
 mypy src/
 ```
 
-### Development Installation
-```bash
-pip install -e ".[dev]"
-pre-commit install
-```
-
 ## Troubleshooting
 
 **Rate Limiting**
-- Adjust `rate_limit` in config.yaml (default: 1 req/sec)
-- Tool automatically respects API limits
+- Adjust `rate_limit` in config.yaml (default: 1 req/sec).
 
 **Database Locked**
-- Only one instance can run at a time
-- Clear stale checkpoints: `forum-analyzer clear-checkpoints`
-
-**API Errors**
-- Verify Discourse site is publicly accessible
-- Check base_url in config.yaml
-- Ensure category ID exists
+- Only one instance can run at a time.
+- Clear stale checkpoints: `forum-analyzer clear-checkpoints`.
 
 **LLM Analysis Errors**
-- Verify Anthropic API key is valid
-- Check API quota and billing
-- Use `--limit` flag for testing with smaller datasets
-
-## API Requirements
-
-This tool requires:
-- Public Discourse forum (no authentication required)
-- Accessible JSON endpoints (Discourse provides JSON representations by appending `.json` to URLs):
-  - `/c/{category_id}.json` - Category listings
-  - `/t/{topic_id}.json` - Topic details
+- Verify your Anthropic API key is valid and has credit.
+- Use the `--limit` flag for testing with smaller datasets.
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make changes with tests
-4. Run linters and tests
-5. Submit a pull request
+4. Submit a pull request
 
 ## License
 
-MIT License - See LICENSE file for details
+MIT License - See [LICENSE](LICENSE) file for details.
 
-## Documentation
+---
 
-- [API Validation](.plan/API_VALIDATION_REPORT.md)
-- [Project Planning](.plan/)
+## Appendix: Glossary
+
+Understanding the terminology used in this tool:
+
+### Discourse Forum Terms
+
+**Category**  
+A top-level organizational unit in Discourse forums (e.g., "Webhooks & Events").
+
+**Topic**  
+A discussion thread within a category.
+
+**Post**  
+An individual message within a topic. The first post is the topic starter; subsequent posts are replies.
+
+### Analysis Terms
+
+**Classification**
+The LLM-assigned type of problem or discussion in a topic (e.g., "webhook_delivery", "authentication").
+
+**Theme**  
+A higher-level pattern grouping multiple related topics (e.g., "Webhook Delivery Failures").
+
+**Severity**  
+The urgency/impact level assigned to a topic (critical, high, medium, low).
+
+### Workflow Terms
+
+**Collection**  
+The process of downloading forum data (`forum-analyzer collect`).
+
+**Analysis**  
+The process of using the LLM to extract insights from topics (`forum-analyzer llm-analyze`).
+
+**Theme Identification**  
+The process of grouping topics into common patterns (`forum-analyzer themes discover`).
