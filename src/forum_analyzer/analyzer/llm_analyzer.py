@@ -82,6 +82,7 @@ class LLMAnalyzer:
             categories = self._get_categories(session)
 
             # Prepare context
+            logger.info(f"Analyzing topic ID: {topic.id} - '{topic.title}'")
             context = self._prepare_topic_context(topic, posts)
 
             # Call Claude API with dynamic categories
@@ -95,13 +96,17 @@ class LLMAnalyzer:
             return None
 
     def analyze_batch(
-        self, limit: Optional[int] = None, force: bool = False
+        self,
+        limit: Optional[int] = None,
+        force: bool = False,
+        progress: Optional["Progress"] = None,
     ) -> Dict[str, Any]:
         """Analyze multiple topics in batch.
 
         Args:
             limit: Maximum number of topics to analyze
             force: Re-analyze already analyzed topics
+            progress: Rich progress bar object
 
         Returns:
             Summary of analysis results
@@ -133,7 +138,16 @@ class LLMAnalyzer:
                 "severities": {},
             }
 
+            if progress:
+                task = progress.add_task(
+                    "[cyan]Analyzing...", total=len(topics)
+                )
+
             for topic in topics:
+                if progress:
+                    progress.update(
+                        task, description=f"Analyzing topic {topic.id}"
+                    )
                 try:
                     analysis = self.analyze_topic(topic.id, force=force)
                     if analysis:
@@ -154,6 +168,8 @@ class LLMAnalyzer:
                 except Exception as e:
                     logger.error(f"Error analyzing topic {topic.id}: {e}")
                     results["errors"] += 1
+                if progress:
+                    progress.update(task, advance=1)
 
             return results
 
@@ -259,8 +275,8 @@ class LLMAnalyzer:
             return answer
 
     def _prepare_topic_context(self, topic: Topic, posts: List[Post]) -> str:
-        """Prepare context for topic analysis."""
-        context = f"""Topic: {topic.title}
+        """Prepare context for topic analysis, truncating if necessary."""
+        header = f"""Topic: {topic.title}
 Created: {topic.created_at}
 Posts: {topic.reply_count}
 Views: {topic.view_count}
@@ -268,16 +284,51 @@ Likes: {topic.like_count}
 
 """
 
-        # Add posts (limit to first 10)
-        for post in posts[:10]:
-            context += f"\n--- Post {post.post_number} "
-            context += f"by {post.username} ---\n"
-            context += f"{post.raw}\n"
+        full_content = ""
+        for post in posts:
+            full_content += f"\n--- Post {post.post_number} "
+            full_content += f"by {post.username} ---\n"
+            content = (
+                post.raw if post.raw and post.raw.strip() else post.cooked
+            )
+            full_content += f"{content}\n"
 
-        if len(posts) > 10:
-            context += f"\n... and {len(posts) - 10} more posts\n"
+        max_len = self.settings.llm_analysis.context_char_limit
+        if len(header) + len(full_content) <= max_len:
+            return header + full_content
 
-        return context
+        # If too long, apply smart truncation
+        if len(posts) > 6:
+            first_posts = posts[:3]
+            last_posts = posts[-3:]
+
+            truncated_content = ""
+            for post in first_posts:
+                truncated_content += f"\n--- Post {post.post_number} "
+                truncated_content += f"by {post.username} ---\n"
+                content = (
+                    post.raw if post.raw and post.raw.strip() else post.cooked
+                )
+                truncated_content += f"{content}\n"
+
+            truncated_content += (
+                "\n[... middle of conversation truncated ...]\n"
+            )
+
+            for post in last_posts:
+                truncated_content += f"\n--- Post {post.post_number} "
+                truncated_content += f"by {post.username} ---\n"
+                content = (
+                    post.raw if post.raw and post.raw.strip() else post.cooked
+                )
+                truncated_content += f"{content}\n"
+
+            final_context = header + truncated_content
+            # Final check to ensure even the truncated version fits
+            return final_context[:max_len]
+
+        # Fallback for topics with <= 6 posts but still too long
+        return (header + full_content)[:max_len]
 
     def _call_claude_api(
         self, context: str, categories: Optional[List[str]] = None
@@ -314,7 +365,8 @@ Return ONLY valid JSON matching this schema:
 
         try:
             logger.debug(
-                f"Calling Claude API with model: {self.settings.llm_analysis.model}"
+                "Calling Claude API with model: "
+                f"{self.settings.llm_analysis.model}"
             )
 
             message = self.client.messages.create(
@@ -512,7 +564,10 @@ Return ONLY valid JSON array:
         except Exception as e:
             logger.error(f"Error identifying themes: {e}")
             logger.error(
-                f"Response text: {response_text[:1000] if 'response_text' in locals() else 'N/A'}"
+                (
+                    "Response text: "
+                    f"{response_text[:1000] if 'response_text' in locals() else 'N/A'}"
+                )
             )
             return []
 

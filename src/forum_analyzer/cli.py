@@ -8,6 +8,13 @@ from typing import Optional
 import click
 from rich.console import Console
 from rich.panel import Panel
+from rich.progress import (
+    BarColumn,
+    Progress,
+    SpinnerColumn,
+    TextColumn,
+    TimeRemainingColumn,
+)
 from rich.table import Table
 from rich.markdown import Markdown
 from sqlalchemy import create_engine, select, func
@@ -807,7 +814,17 @@ def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
             console.print(
                 f"[cyan]Starting batch analysis{limit_text}...[/cyan]"
             )
-            results = analyzer.analyze_batch(limit=limit, force=force)
+            with Progress(
+                SpinnerColumn(),
+                TextColumn("[progress.description]{task.description}"),
+                BarColumn(),
+                TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+                TextColumn("({task.completed} of {task.total})"),
+                TimeRemainingColumn(),
+            ) as progress:
+                results = analyzer.analyze_batch(
+                    limit=limit, force=force, progress=progress
+                )
 
             console.print("\n[green]✓ Analysis complete[/green]")
             console.print(f"Total topics: {results['total']}")

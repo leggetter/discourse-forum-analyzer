@@ -39,6 +39,7 @@ llm_analysis:
   max_tokens: 4096
   temperature: 0.0
   theme_context_limit: 50  # Max topics to analyze for theme discovery
+  context_char_limit: 15000 # Max characters for analysis context to avoid API errors
   
   # Ask command settings
   ask:

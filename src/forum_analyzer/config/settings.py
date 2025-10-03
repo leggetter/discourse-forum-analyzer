@@ -64,6 +64,7 @@ class LLMAnalysisSettings(BaseSettings):
     max_tokens: int = 4096
     temperature: float = 0.0
     theme_context_limit: int = 50
+    context_char_limit: int = 15000  # Max characters for analysis context
     ask: AskSettings = Field(default_factory=AskSettings)
 
 
