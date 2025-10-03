@@ -239,21 +239,22 @@ discourse-forum-analyzer/
 
 The schema auto-migrates when using LLM analysis features.
 
-## Example: Analyzing Shopify Developer Forum
+## Example Application: Shopify Developer Forum
 
-The tool was initially developed to analyze Shopify's webhook discussions. Here's what was collected:
+This tool was demonstrated by analyzing Shopify's webhook discussions as an example. The same approach works for any Discourse forum.
 
+**Example dataset:**
 - **Topics**: 271
 - **Posts**: 1,201
 - **Users**: 324
 - **Date Range**: September 2024 - October 2025
 
-Analysis results:
+**Example analysis results:**
 - 15 distinct problem themes identified
 - 18 critical issues found
 - Top issue: Configuration challenges (25.1% of topics)
 
-See [`reports/LLM_ANALYSIS_REPORT.md`](reports/LLM_ANALYSIS_REPORT.md) for complete findings.
+See complete example analysis: [examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md](examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md)
 
 ### Performance Metrics
 - API cost: $0.05 total (~$0.0002 per topic)

@@ -1,4 +1,4 @@
-"""Async API client for Shopify Developer Forum."""
+"""Async API client for Discourse Forum."""
 
 import asyncio
 import logging
@@ -41,7 +41,7 @@ class RateLimiter:
 
 
 class ForumAPIClient:
-    """Async HTTP client for Shopify Developer Forum API."""
+    """Async HTTP client for Discourse Forum API."""
 
     def __init__(
         self,
@@ -53,7 +53,7 @@ class ForumAPIClient:
         """Initialize API client.
 
         Args:
-            base_url: Base URL for the forum API (default: https://community.shopify.dev)
+            base_url: Base URL for the forum API
             rate_limit: Requests per second (default: 1.0)
             timeout: Request timeout in seconds (default: 30.0)
             max_retries: Maximum retry attempts (default: 3)
@@ -71,7 +71,7 @@ class ForumAPIClient:
             timeout=self.timeout,
             follow_redirects=True,
             headers={
-                "User-Agent": "Shopify-Forum-Analyzer/0.1.0",
+                "User-Agent": "Discourse-Forum-Analyzer/0.1.0",
                 "Accept": "application/json",
             },
         )

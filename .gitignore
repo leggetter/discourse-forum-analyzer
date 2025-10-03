@@ -65,6 +65,10 @@ data/database/
 data/checkpoints/
 !data/checkpoints/.gitkeep
 
+# Generated reports (user-specific)
+/reports/*
+!/reports/.gitkeep
+
 # Temporary files (root level only)
 /test_*.py
 /debug_*.py

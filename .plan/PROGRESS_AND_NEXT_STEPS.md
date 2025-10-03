@@ -113,9 +113,9 @@
 - ✅ [Comprehensive README](../README.md) - Full project documentation
 - ✅ [API Validation Report](API_VALIDATION_REPORT.md) - API testing
 
-### Reports Examples
-- ✅ [Collection Report](../reports/COLLECTION_REPORT.md) - Data collection statistics
-- ✅ [LLM Analysis Report](../reports/LLM_ANALYSIS_REPORT.md) - Complete findings
+### Example Reports (Shopify Webhooks Analysis)
+- ✅ [Collection Report](../examples/shopify-webhooks/COLLECTION_REPORT.md) - Data collection statistics
+- ✅ [LLM Analysis Report](../examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md) - Complete findings
 
 ### Analysis Results
 - ✅ 271 webhook problems identified and categorized

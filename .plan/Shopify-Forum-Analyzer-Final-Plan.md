@@ -31,9 +31,9 @@
 - ✅ 18 critical issues identified for immediate attention
 - ✅ Production-ready code with comprehensive documentation
 
-### Reports Generated
-- [Collection Report](../reports/COLLECTION_REPORT.md) - Data collection statistics
-- [LLM Analysis Report](../reports/LLM_ANALYSIS_REPORT.md) - Complete problem analysis
+### Example Reports (Shopify Webhooks Analysis)
+- [Collection Report](../examples/shopify-webhooks/COLLECTION_REPORT.md) - Data collection statistics
+- [LLM Analysis Report](../examples/shopify-webhooks/LLM_ANALYSIS_REPORT.md) - Complete problem analysis
 - [Project Summary](../README.md) - Project overview and documentation
 
 ---

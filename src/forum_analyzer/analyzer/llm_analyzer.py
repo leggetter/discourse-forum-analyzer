@@ -243,7 +243,7 @@ Likes: {topic.like_count}
 
     def _call_claude_api(self, context: str) -> Optional[Dict[str, Any]]:
         """Call Claude API for topic analysis."""
-        system_prompt = """You are analyzing Shopify developer forum \
+        system_prompt = """You are analyzing developer forum \
 posts to identify problems that need solving.
 
 Analyze the topic and provide:
@@ -368,7 +368,7 @@ Root Cause: {analysis.root_cause}
     ) -> List[Dict[str, Any]]:
         """Identify themes using Claude API."""
         system_prompt = f"""You are identifying common problem themes \
-across Shopify developer forum topics.
+across developer forum topics.
 
 Analyze the topics and identify recurring themes that appear in at \
 least {min_topics} topics.
@@ -458,7 +458,7 @@ Root Cause: {analysis.root_cause}
     def _answer_question_via_api(self, context: str) -> str:
         """Answer question using Claude API."""
         system_prompt = """You are a helpful assistant analyzing \
-Shopify developer forum data.
+developer forum data.
 
 Answer the user's question based on the analyzed forum topics \
 provided.

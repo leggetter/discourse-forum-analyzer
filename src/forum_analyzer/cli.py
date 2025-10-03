@@ -1,4 +1,4 @@
-"""CLI interface for Shopify Forum Analyzer."""
+"""CLI interface for Discourse Forum Analyzer."""
 
 import asyncio
 import sys
@@ -115,7 +115,7 @@ def display_config(category_slug: str, category_id: int) -> None:
 @click.group()
 @click.version_option(version="0.1.0")
 def cli():
-    """Shopify Forum Analyzer - Collect and analyze forum data."""
+    """Discourse Forum Analyzer - Collect and analyze forum data."""
     pass
 
 

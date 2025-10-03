@@ -1,5 +1,5 @@
 """
-Data collection orchestrator for Shopify Dev Forum.
+Data collection orchestrator for Discourse Forum.
 
 This module ties together the API client, database models, and
 checkpoint manager to orchestrate the collection of forum data with
