@@ -1,5 +1,8 @@
 # Shopify Webhooks & Events Forum Analysis Example
 
+
+**Terminology Note:** This example analyzes the Shopify "Webhooks & Events" **category** (a Discourse forum section) to identify problem **classifications** (LLM-assigned types). See the [main glossary](../../README.md#glossary) for terminology definitions.
+
 This example demonstrates how to use the Discourse Forum Analyzer to collect and analyze discussions from Shopify's developer forum, specifically focusing on the Webhooks & Events category.
 
 ## What This Example Demonstrates

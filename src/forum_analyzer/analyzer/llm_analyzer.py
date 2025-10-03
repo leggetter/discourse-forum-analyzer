@@ -372,10 +372,12 @@ Return ONLY valid JSON matching this schema:
         self, session: Session, topic_id: int, analysis: Dict[str, Any]
     ) -> None:
         """Store analysis results in database."""
+        # Note: "category" field stores the CLASSIFICATION (problem type),
+        # not the Discourse forum category. See glossary for terminology.
         llm_analysis = LLMAnalysis(
             topic_id=topic_id,
             core_problem=analysis.get("core_problem"),
-            category=analysis.get("category"),
+            category=analysis.get("category"),  # Classification
             severity=analysis.get("severity"),
             key_terms=json.dumps(analysis.get("key_terms", [])),
             root_cause=analysis.get("root_cause"),

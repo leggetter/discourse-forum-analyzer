@@ -175,6 +175,7 @@ class LLMAnalysis(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     topic_id = Column(Integer, ForeignKey("topics.id"), nullable=False, unique=True)
     core_problem = Column(Text)
+    # NOTE: Stores CLASSIFICATION (problem type), not forum category
     category = Column(String(100))
     severity = Column(String(50))
     key_terms = Column(Text)  # JSON

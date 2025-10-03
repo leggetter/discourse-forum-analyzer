@@ -1,5 +1,8 @@
 # Forum Data Collection Report
 
+
+**Terminology Note:** This report covers the \"Webhooks & Events\" **category** (Discourse forum section). See [Glossary](../../README.md#glossary) for term definitions.
+
 **Generated:** October 2, 2025  
 **Collection Date:** October 2, 2025  
 **Status:** ✅ Complete

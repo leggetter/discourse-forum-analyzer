@@ -1,5 +1,8 @@
 # Shopify Webhooks Forum Analysis - Comprehensive LLM Analysis Report
 
+
+**Terminology Note:** This analysis identifies problem **classifications** (types) and **themes** (patterns) from the "Webhooks & Events" forum **category**. See [Glossary](../../README.md#glossary) for definitions.
+
 **Generated:** 2025-10-02  
 **Analysis Period:** Full dataset (271 topics)  
 **Model:** Claude API via forum-analyzer
@@ -30,10 +33,10 @@ This report presents a comprehensive analysis of 271 webhook-related forum topic
 | Skipped | 0 | 0% |
 | Errors | 0 | 0% |
 
-### Category Distribution
+### Classification Distribution
 
-| Category | Count | Percentage |
-|----------|-------|------------|
+| Classification | Count | Percentage |
+|----------------|-------|------------|
 | webhook_configuration | 129 | 47.6% |
 | webhook_delivery | 64 | 23.6% |
 | other | 28 | 10.3% |
