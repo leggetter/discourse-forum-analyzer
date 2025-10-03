@@ -837,7 +837,13 @@ def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
     default=3,
     help="Minimum number of topics to form a theme",
 )
-def themes(min_topics: int):
+@click.option(
+    "--context-limit",
+    type=int,
+    default=None,
+    help="Maximum number of topics to analyze for patterns",
+)
+def themes(min_topics: int, context_limit: Optional[int]):
     """Identify common problem themes across analyzed topics.
 
     Groups related problems into themes based on LLM analysis results.
@@ -846,6 +852,7 @@ def themes(min_topics: int):
     Examples:
         forum-analyzer themes
         forum-analyzer themes --min-topics 5
+        forum-analyzer themes --context-limit 100
     """
     console.print(
         Panel.fit(
@@ -874,10 +881,19 @@ def themes(min_topics: int):
     try:
         analyzer = LLMAnalyzer(settings)
 
-        console.print(
-            f"[cyan]Identifying themes (min {min_topics} topics)...[/cyan]"
+        settings = get_settings()
+        limit_msg = (
+            f"{context_limit}"
+            if context_limit
+            else str(settings.llm_analysis.theme_context_limit)
         )
-        themes_list = analyzer.identify_themes(min_topics=min_topics)
+        console.print(
+            f"[cyan]Identifying themes "
+            f"(min {min_topics} topics, context limit {limit_msg})...[/cyan]"
+        )
+        themes_list = analyzer.identify_themes(
+            min_topics=min_topics, context_limit=context_limit
+        )
 
         if not themes_list:
             console.print("[yellow]No themes identified[/yellow]")

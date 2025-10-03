@@ -173,11 +173,14 @@ class LLMAnalyzer:
             # No themes yet - let Claude determine categories freely
             return None
 
-    def identify_themes(self, min_topics: int = 3) -> List[Dict[str, Any]]:
+    def identify_themes(
+        self, min_topics: int = 3, context_limit: Optional[int] = None
+    ) -> List[Dict[str, Any]]:
         """Identify common problem themes from collected topics.
 
         Args:
             min_topics: Minimum number of topics to form a theme
+            context_limit: Maximum number of topics to include in context
 
         Returns:
             List of identified themes
@@ -197,7 +200,12 @@ class LLMAnalyzer:
             logger.info(f"Found {len(topics)} topics for theme identification")
 
             # Prepare context for theme identification
-            context = self._prepare_theme_context(topics, session)
+            limit = (
+                context_limit
+                if context_limit is not None
+                else self.settings.llm_analysis.theme_context_limit
+            )
+            context = self._prepare_theme_context(topics, session, limit)
 
             logger.debug(f"Context length: {len(context)} characters")
             if len(context) < 50:
@@ -390,11 +398,13 @@ Return ONLY valid JSON matching this schema:
 
         logger.info(f"Stored analysis for topic {topic_id}")
 
-    def _prepare_theme_context(self, topics: List[Topic], session) -> str:
+    def _prepare_theme_context(
+        self, topics: List[Topic], session, limit: int
+    ) -> str:
         """Prepare context for theme identification from raw topics."""
         context = "Forum Topics:\n\n"
 
-        for topic in topics[:50]:  # Limit to 50 topics for context
+        for topic in topics[:limit]:
             # Get first post for content
             first_post = session.execute(
                 select(Post)

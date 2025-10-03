@@ -180,6 +180,7 @@ llm_analysis:
   batch_size: 10
   max_tokens: 4096
   temperature: 0.0
+  theme_context_limit: 50  # Max topics to analyze for theme discovery
 ```
 
 ## Usage
@@ -236,6 +237,20 @@ forum-analyzer ask "What are the main authentication issues?"
 
 **Note:** Running `themes` before `llm-analyze` allows the LLM to use categories discovered from your actual forum content, rather than generic categories. This produces more relevant and accurate categorization.
 
+### Identify Themes
+```bash
+# Find common themes (minimum 3 topics per theme)
+forum-analyzer themes
+
+# Require more topics per theme
+forum-analyzer themes --min-topics 5
+
+# Analyze more topics for pattern discovery
+forum-analyzer themes --context-limit 100
+
+# Analyze all topics (if you have many topics, this may be expensive)
+forum-analyzer themes --context-limit 1000
+```
 
 ### Analyze Topics
 ```bash
@@ -250,15 +265,6 @@ forum-analyzer llm-analyze --force
 
 # Analyze specific topic
 forum-analyzer llm-analyze --topic-id 66
-```
-
-### Identify Themes
-```bash
-# Find common themes (minimum 3 topics per theme)
-forum-analyzer themes
-
-# Require more topics per theme
-forum-analyzer themes --min-topics 5
 ```
 
 ### Query Data

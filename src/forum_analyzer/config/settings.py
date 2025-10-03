@@ -63,6 +63,7 @@ class LLMAnalysisSettings(BaseSettings):
     batch_size: int = 10
     max_tokens: int = 4096
     temperature: float = 0.0
+    theme_context_limit: int = 50
     ask: AskSettings = Field(default_factory=AskSettings)
 
 

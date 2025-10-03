@@ -38,6 +38,7 @@ llm_analysis:
   batch_size: 10
   max_tokens: 4096
   temperature: 0.0
+  theme_context_limit: 50  # Max topics to analyze for theme discovery
   
   # Ask command settings
   ask:
