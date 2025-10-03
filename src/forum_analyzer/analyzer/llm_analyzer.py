@@ -78,11 +78,14 @@ class LLMAnalyzer:
                 .all()
             )
 
+            # Get dynamic categories
+            categories = self._get_categories(session)
+
             # Prepare context
             context = self._prepare_topic_context(topic, posts)
 
-            # Call Claude API
-            analysis = self._call_claude_api(context)
+            # Call Claude API with dynamic categories
+            analysis = self._call_claude_api(context, categories)
 
             if analysis:
                 # Store results
@@ -154,8 +157,24 @@ class LLMAnalyzer:
 
             return results
 
+    def _get_categories(self, session) -> Optional[List[str]]:
+        """Get categories from existing themes or return None.
+
+        Returns:
+            List of theme names if themes exist, None otherwise
+            to allow free-form categorization
+        """
+        themes = session.execute(select(ProblemTheme)).scalars().all()
+
+        if themes:
+            # Use discovered theme names as categories
+            return [theme.theme_name for theme in themes]
+        else:
+            # No themes yet - let Claude determine categories freely
+            return None
+
     def identify_themes(self, min_topics: int = 3) -> List[Dict[str, Any]]:
-        """Identify common problem themes across analyzed topics.
+        """Identify common problem themes from collected topics.
 
         Args:
             min_topics: Minimum number of topics to form a theme
@@ -164,15 +183,26 @@ class LLMAnalyzer:
             List of identified themes
         """
         with self.SessionLocal() as session:
-            # Get all analyses
-            analyses = session.execute(select(LLMAnalysis)).scalars().all()
+            # Get all topics with their posts
+            topics = (
+                session.execute(select(Topic).where(Topic.reply_count >= 0))
+                .scalars()
+                .all()
+            )
 
-            if not analyses:
-                logger.warning("No analyzed topics found")
+            if not topics:
+                logger.warning("No topics found")
                 return []
 
+            logger.info(f"Found {len(topics)} topics for theme identification")
+
             # Prepare context for theme identification
-            context = self._prepare_theme_context(analyses)
+            context = self._prepare_theme_context(topics, session)
+
+            logger.debug(f"Context length: {len(context)} characters")
+            if len(context) < 50:
+                logger.warning(f"Context is very short: {context}")
+                return []
 
             # Call Claude API
             themes = self._identify_themes_via_api(context, min_topics)
@@ -241,27 +271,38 @@ Likes: {topic.like_count}
 
         return context
 
-    def _call_claude_api(self, context: str) -> Optional[Dict[str, Any]]:
+    def _call_claude_api(
+        self, context: str, categories: Optional[List[str]] = None
+    ) -> Optional[Dict[str, Any]]:
         """Call Claude API for topic analysis."""
-        system_prompt = """You are analyzing developer forum \
+        # Prepare category instruction based on available categories
+        if categories:
+            category_list = ", ".join(categories)
+            category_instruction = f"2. category: One of [{category_list}]"
+        else:
+            category_instruction = (
+                "2. category: An appropriate category that describes "
+                "the type of problem or discussion"
+            )
+
+        system_prompt = f"""You are analyzing developer forum \
 posts to identify problems that need solving.
 
 Analyze the topic and provide:
 1. core_problem: Clear, concise problem description (1-2 sentences)
-2. category: One of [webhook_delivery, webhook_configuration, \
-event_handling, rate_limiting, authentication, documentation, other]
+{category_instruction}
 3. severity: One of [critical, high, medium, low]
 4. key_terms: Array of important technical terms (3-7 terms)
 5. root_cause: Brief analysis of what's causing the problem
 
 Return ONLY valid JSON matching this schema:
-{
+{{
   "core_problem": "string",
   "category": "string",
   "severity": "string",
   "key_terms": ["string"],
   "root_cause": "string"
-}"""
+}}"""
 
         try:
             logger.debug(
@@ -347,17 +388,32 @@ Return ONLY valid JSON matching this schema:
 
         logger.info(f"Stored analysis for topic {topic_id}")
 
-    def _prepare_theme_context(self, analyses: List[LLMAnalysis]) -> str:
-        """Prepare context for theme identification."""
-        context = "Analyzed Topics:\n\n"
+    def _prepare_theme_context(self, topics: List[Topic], session) -> str:
+        """Prepare context for theme identification from raw topics."""
+        context = "Forum Topics:\n\n"
 
-        for analysis in analyses:
-            context += f"""Topic ID: {analysis.topic_id}
-Problem: {analysis.core_problem}
-Category: {analysis.category}
-Severity: {analysis.severity}
-Key Terms: {analysis.key_terms}
-Root Cause: {analysis.root_cause}
+        for topic in topics[:50]:  # Limit to 50 topics for context
+            # Get first post for content
+            first_post = session.execute(
+                select(Post)
+                .where(Post.topic_id == topic.id)
+                .order_by(Post.post_number)
+                .limit(1)
+            ).scalar_one_or_none()
+
+            post_content = ""
+            if first_post:
+                # Truncate long content
+                content = first_post.raw or first_post.cooked or ""
+                post_content = (
+                    content[:300] + "..." if len(content) > 300 else content
+                )
+
+            context += f"""Topic ID: {topic.id}
+Title: {topic.title}
+Views: {topic.view_count or 0}
+Posts: {topic.reply_count or 0}
+Content: {post_content}
 
 """
 
@@ -391,6 +447,11 @@ Return ONLY valid JSON array:
 ]"""
 
         try:
+            logger.info(
+                f"Calling Claude API for theme identification "
+                f"(model: {self.settings.llm_analysis.model})"
+            )
+
             message = self.client.messages.create(
                 model=self.settings.llm_analysis.model,
                 max_tokens=self.settings.llm_analysis.max_tokens,
@@ -399,25 +460,48 @@ Return ONLY valid JSON array:
                 messages=[{"role": "user", "content": context}],
             )
 
+            logger.info("Received response from Claude API")
+
             # Parse response
             response_text = message.content[0].text
 
-            # Strip markdown code blocks if present
-            response_text = response_text.strip()
-            if response_text.startswith("```json"):
-                response_text = response_text[7:]  # Remove ```json
-            if response_text.startswith("```"):
-                response_text = response_text[3:]  # Remove ```
-            if response_text.endswith("```"):
-                response_text = response_text[:-3]  # Remove closing ```
-            response_text = response_text.strip()
+            # Log raw response for debugging
+            logger.debug(f"Raw API response: {response_text[:500]}")
+
+            # Extract JSON from response
+            # Handle case where response has explanatory text before JSON
+            json_start = response_text.find("[")
+            json_end = response_text.rfind("]")
+
+            if json_start == -1 or json_end == -1:
+                logger.error("No JSON array found in response")
+                logger.error(f"Response: {response_text[:1000]}")
+                return []
+
+            # Extract just the JSON array
+            response_text = response_text[json_start : json_end + 1]
+
+            # Check if response is empty
+            if not response_text:
+                logger.error("Empty response from Claude API")
+                return []
+
+            # Log cleaned response for debugging
+            logger.debug(f"Cleaned response: {response_text[:500]}")
 
             themes = json.loads(response_text)
 
             return themes
 
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON parsing error: {e}")
+            logger.error(f"Response text: {response_text[:1000]}")
+            return []
         except Exception as e:
             logger.error(f"Error identifying themes: {e}")
+            logger.error(
+                f"Response text: {response_text[:1000] if 'response_text' in locals() else 'N/A'}"
+            )
             return []
 
     def _store_theme(self, session: Session, theme: Dict[str, Any]) -> None:

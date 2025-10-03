@@ -111,6 +111,25 @@ forum-analyzer update --category-slug category-name
 forum-analyzer status
 ```
 
+### Recommended Analysis Workflow
+
+```bash
+# 1. Collect forum data
+forum-analyzer collect
+
+# 2. Discover natural categories from the data (RECOMMENDED)
+forum-analyzer themes --min-topics 3
+
+# 3. Analyze topics using discovered categories
+forum-analyzer llm-analyze
+
+# 4. Query your analysis
+forum-analyzer ask "What are the main authentication issues?"
+```
+
+**Note:** Running `themes` before `llm-analyze` allows the LLM to use categories discovered from your actual forum content, rather than generic categories. This produces more relevant and accurate categorization.
+
+
 ### Analyze Topics
 ```bash
 # Analyze all unanalyzed topics

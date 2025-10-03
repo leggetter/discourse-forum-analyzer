@@ -39,11 +39,11 @@ forum-analyzer init-db
 # Collect forum data (takes ~5 minutes)
 forum-analyzer collect
 
-# Optional: Analyze with LLM (takes ~10 minutes, requires API key)
-forum-analyzer llm-analyze
+# Optional: Discover categories from the data (RECOMMENDED before LLM analysis)
+forum-analyzer themes --min-topics 3
 
-# Optional: Identify common themes (requires LLM analysis)
-forum-analyzer themes
+# Optional: Analyze with LLM using discovered categories (takes ~10 minutes, requires API key)
+forum-analyzer llm-analyze
 
 # Optional: Query the data with natural language (requires LLM analysis)
 forum-analyzer ask "What are the most critical webhook reliability issues?"
@@ -153,9 +153,25 @@ View collection report:
   forum-analyzer report collection
 ```
 
-### Step 5: LLM Analysis (Optional)
+### Step 5: Discover Categories (Optional but Recommended)
 
-Analyze the collected data with Claude:
+Discover natural categories from the collected data:
+
+```bash
+forum-analyzer themes --min-topics 3
+```
+
+**What it does:**
+- Analyzes topics to identify common problem themes
+- Groups similar issues together
+- Creates categories based on actual forum content
+- Enables better categorization in LLM analysis
+
+**Note:** Running this before LLM analysis allows Claude to use discovered themes as categories, producing more relevant and accurate categorization than generic categories.
+
+### Step 6: LLM Analysis (Optional)
+
+Analyze the collected data with Claude using discovered categories:
 
 ```bash
 forum-analyzer llm-analyze
@@ -166,9 +182,10 @@ forum-analyzer llm-analyze
 - Collected forum data in database
 
 **What it does:**
-- Analyzes each post for sentiment, urgency, and pain points
-- Identifies technical issues and feature requests
-- Extracts developer concerns and patterns
+- Uses discovered themes as categories (if themes step was run)
+- Falls back to free-form categorization if no themes exist
+- Analyzes each topic for core problems and severity
+- Identifies technical issues and patterns
 - Stores analysis in database for querying
 
 **Expected timing:**
@@ -189,7 +206,7 @@ View analysis report:
   forum-analyzer report llm
 ```
 
-### Step 6: Explore Results
+### Step 7: Explore Results
 
 #### View Reports
 

@@ -181,6 +181,64 @@
    - Automated issue creation in tracking systems
    - Developer documentation improvements
 
+## 🚨 CRITICAL: Prioritized Next Steps
+
+### Phase 2.5: LLM-Driven Category Discovery (IMMEDIATE PRIORITY)
+
+**Problem Statement:**
+Current implementation requires users to manually define categories in config BEFORE analyzing unknown forum content. This is a critical usability flaw - you cannot know appropriate categories until you've seen the data.
+
+**Current Flawed Workflow:**
+1. User must guess categories for unknown forum
+2. Write categories into config.yaml
+3. Hope guesses are relevant
+4. Run llm-analyze with predefined categories
+
+**Correct Workflow (To Be Implemented):**
+1. Collect forum data (no categories needed)
+2. LLM discovers natural categories via `themes` command
+3. LLM analysis uses discovered categories
+4. Categories adapt to actual forum content
+
+**Implementation Plan:**
+
+#### Option A: Themes-First Approach (RECOMMENDED)
+- **Effort:** 4-6 hours
+- **Approach:** Use existing `themes` functionality to discover categories
+- **Changes Required:**
+  1. Modify `llm-analyze` to check if themes exist in database
+  2. If themes exist, use theme names as categories
+  3. If no themes, let Claude determine categories freely (no constraints)
+  4. Update documentation to recommend running `themes` before `llm-analyze`
+
+#### Option B: Integrated Discovery
+- **Effort:** 8-10 hours  
+- **Approach:** Make `llm-analyze` automatically discover categories
+- **Changes Required:**
+  1. First pass: Analyze topics without category constraints
+  2. Cluster similar problems to identify natural categories
+  3. Second pass: Re-categorize topics using discovered categories
+  4. Higher API costs (two passes) but fully automated
+
+**Recommendation:** Implement Option A first (themes-first), then consider Option B if automated workflow is needed.
+
+**Files to Modify:**
+- [`src/forum_analyzer/analyzer/llm_analyzer.py`](../src/forum_analyzer/analyzer/llm_analyzer.py:246-264) - Remove hardcoded categories, add theme-based fallback
+- [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py:786-791) - Update workflow guidance
+- [`README.md`](../README.md:115-136) - Document correct workflow: collect → themes → llm-analyze
+- [`examples/shopify-webhooks/README.md`](../examples/shopify-webhooks/README.md:1) - Update usage instructions
+
+**Priority:** CRITICAL - Makes tool unusable for unknown forums without this fix
+
+**IMPLEMENTATION UPDATE (In Progress):**
+- ✅ Part 1: `llm-analyze` now uses discovered themes as categories
+- ✅ Part 2: CLI shows helpful tip when no themes exist
+- ⚠️  **CRITICAL ISSUE DISCOVERED:** Current `themes` command has circular dependency!
+  - **Current Bug:** `themes` reads from `LLMAnalysis` table (requires analysis first)
+  - **Needed Fix:** `themes` should read from `Topic` table (raw data only)
+  - **Impact:** Cannot run `themes` → `llm-analyze` workflow until fixed
+  - **Status:** Requires refactoring `identify_themes()` method to use Topics instead of LLMAnalyses
+
 
 ## ⚠️ Known Limitations & Enhancement Opportunities
 
@@ -202,6 +260,30 @@
    - **Enhancement:** Add progress indicator or spinner during API call
    - **Impact:** Low (functional, but no feedback during processing)
    - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py:859-861)
+
+3. **Missing CLI Commands for Testing & Maintenance**
+   - **Issue:** No CLI commands to clear themes or LLM analysis results
+   - **Current Workaround:** Requires manual Python scripts to clear data for testing:
+     ```python
+     # Must use direct database access
+     from sqlalchemy import delete
+     session.execute(delete(ProblemTheme))  # Clear themes
+     session.execute(delete(LLMAnalysis))   # Clear analysis
+     ```
+   - **Enhancement:** Add CLI commands for common maintenance tasks:
+     ```bash
+     forum-analyzer clear-themes         # Clear all discovered themes
+     forum-analyzer clear-analysis       # Clear LLM analysis results
+     forum-analyzer clear-all --confirm  # Clear all analyzed data
+     ```
+   - **Use Cases:**
+     - Testing new analysis approaches
+     - Re-analyzing with updated prompts
+     - Resetting before re-running themes discovery
+     - Debugging analysis issues
+   - **Impact:** Medium (makes testing/debugging much easier)
+   - **Effort:** 2-3 hours
+   - **Location:** [`src/forum_analyzer/cli.py`](../src/forum_analyzer/cli.py) - Add new commands similar to `clear-checkpoints`
 
 ### Architectural Flexibility Considerations
 

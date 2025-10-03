@@ -762,6 +762,25 @@ def llm_analyze(limit: Optional[int], force: bool, topic_id: Optional[int]):
         sys.exit(1)
 
     try:
+
+        # Check if themes exist and provide guidance
+        from sqlalchemy import create_engine, select
+        from forum_analyzer.collector.models import ProblemTheme
+
+        engine = create_engine(settings.database.url)
+        from sqlalchemy.orm import Session
+
+        with Session(engine) as session:
+            themes = session.execute(select(ProblemTheme)).scalars().first()
+            if not themes:
+                console.print(
+                    "[yellow]💡 Tip: Run 'forum-analyzer themes' first "
+                    "to discover categories from your data[/yellow]"
+                )
+                console.print(
+                    "[yellow]   This will help the LLM use relevant "
+                    "categories instead of generic ones.[/yellow]\n"
+                )
         analyzer = LLMAnalyzer(settings)
 
         if topic_id:
