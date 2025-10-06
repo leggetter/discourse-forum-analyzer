@@ -381,7 +381,75 @@ def collect(
         )
         sys.exit(130)
     except Exception as e:
-        console.print(f"\n[red]✗ Collection failed: {e}[/red]")
+        import httpx
+        import logging
+
+        # User-friendly error messages for common issues
+        error_msg = str(e)
+
+        if (
+            isinstance(e, httpx.ConnectError)
+            or "nodename nor servname" in error_msg
+        ):
+            console.print(
+                "\n[red]✗ Collection failed: Cannot connect to forum[/red]\n"
+            )
+            console.print(
+                "[yellow]Possible causes:[/yellow]\n"
+                "  • Check that the forum URL is correct in config.yaml\n"
+                "  • Verify you have internet connectivity\n"
+                "  • The forum may be temporarily unavailable\n"
+            )
+            console.print(
+                "\n[dim]💡 Tip: Run with --verbose or check logs/ "
+                "for detailed error information[/dim]"
+            )
+
+            # Log detailed error for debugging
+            logger = logging.getLogger(__name__)
+            logger.debug(f"Connection error details: {e}", exc_info=True)
+
+        elif isinstance(e, httpx.TimeoutException):
+            console.print(
+                "\n[red]✗ Collection failed: Request timeout[/red]\n"
+            )
+            console.print(
+                "[yellow]The forum took too long to respond.[/yellow]\n"
+                "Try again later or check your network connection.\n"
+            )
+
+        elif isinstance(e, httpx.HTTPStatusError):
+            status_code = e.response.status_code
+            console.print(
+                f"\n[red]✗ Collection failed: HTTP {status_code}[/red]\n"
+            )
+            if status_code == 404:
+                console.print(
+                    "[yellow]The category was not found.[/yellow]\n"
+                    "Check the category ID in your config.yaml\n"
+                )
+            elif status_code == 403:
+                console.print(
+                    "[yellow]Access forbidden.[/yellow]\n"
+                    "The category may be private or require authentication.\n"
+                )
+            else:
+                console.print(
+                    f"[yellow]Server returned error: {status_code}[/yellow]\n"
+                )
+
+        else:
+            # Generic error with suggestion to check logs
+            console.print("\n[red]✗ Collection failed[/red]\n")
+            console.print(f"[yellow]Error: {error_msg}[/yellow]\n")
+            console.print(
+                "[dim]💡 Check logs/forum_analyzer.log for details[/dim]"
+            )
+
+            # Log full error for debugging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Collection error: {e}", exc_info=True)
+
         sys.exit(1)
 
 
