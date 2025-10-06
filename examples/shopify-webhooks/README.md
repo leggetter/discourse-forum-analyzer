@@ -1,273 +1,111 @@
 # Shopify Webhooks & Events Forum Analysis Example
 
+**Terminology Note:** This example analyzes the Shopify "Webhooks & Events" **category** (a Discourse forum section). See the [main glossary](../../README.md#appendix-glossary) for terminology definitions.
 
-**Terminology Note:** This example analyzes the Shopify "Webhooks & Events" **category** (a Discourse forum section) to identify problem **classifications** (LLM-assigned types). See the [main glossary](../../README.md#glossary) for terminology definitions.
+This example demonstrates analyzing the [Shopify Webhooks & Events forum](https://community.shopify.dev/c/webhooks-and-events/18) to identify webhook reliability issues, event handling challenges, and integration problems.
 
-This example demonstrates how to use the Discourse Forum Analyzer to collect and analyze discussions from Shopify's developer forum, specifically focusing on the Webhooks & Events category.
+## What You'll Learn
 
-## What This Example Demonstrates
-
-- **Data Collection**: Scraping forum posts, topics, and metadata from a Discourse forum
-- **LLM-Powered Analysis**: Using Claude to analyze developer pain points and sentiment
-- **Theme Identification**: Discovering common patterns and issues in forum discussions
-- **Interactive Querying**: Using natural language to explore forum data
-
-The analysis focuses on the [Shopify Webhooks & Events category](https://community.shopify.dev/c/webhooks-and-events/18), which contains developer discussions about webhook reliability, event handling, and integration challenges.
+- How to initialize a project for a specific Discourse forum category
+- Collecting forum data with checkpoint-based recovery
+- Discovering themes from real forum discussions
+- LLM-powered analysis of developer pain points
+- Querying results with natural language
 
 ## Prerequisites
 
-- **Python 3.10 or higher**
-- **Anthropic API key** (optional, only needed for LLM analysis features)
-  - Get your API key from [console.anthropic.com](https://console.anthropic.com)
-  - Free tier available; this example costs approximately $0.05 to run
+See the [main README](../../README.md#requirements) for installation instructions.
+
+**You'll need:**
+- Python 3.10+
+- Anthropic API key (optional, only for LLM features - costs ~$0.05 for this example)
 
 ## Quick Start
 
 ```bash
-# From the examples/shopify-webhooks directory, navigate to project root
-cd ../..
-
-# Install the tool and dependencies
+# 1. Install the tool
 pip install -e .
 
-# Copy the example configuration
-cp examples/shopify-webhooks/config.yaml config/config.yaml
+# 2. Create and initialize project
+mkdir shopify-webhooks-analysis
+cd shopify-webhooks-analysis
+forum-analyzer init
 
-# Add your Anthropic API key to config/config.yaml (optional, only for LLM features)
-# Edit config/config.yaml and add your API key to the llm_analysis.api_key field
+# When prompted, enter:
+#   Forum URL: https://community.shopify.dev
+#   Category path: c
+#   Category ID: 18
+#   API key: (your key, or skip for collection-only)
 
-# Initialize the database
-forum-analyzer init-db
-
-# Collect forum data (takes ~5 minutes)
+# 3. Collect data (~5 minutes)
 forum-analyzer collect
 
-# Optional: Discover categories from the data (RECOMMENDED before LLM analysis)
-forum-analyzer themes discover --min-topics 3
-
-# Optional: Analyze with LLM using discovered categories (takes ~10 minutes, requires API key)
-forum-analyzer llm-analyze
-
-# Optional: Query the data with natural language (requires LLM analysis)
-forum-analyzer ask "What are the most critical webhook reliability issues?"
-```
-
-## Detailed Setup and Usage
-
-### Step 1: Installation
-
-For complete installation instructions, see the [main README](../../README.md#installation). Quick version:
-
-```bash
-# Clone the repository (if you haven't already)
-git clone https://github.com/yourusername/discourse-forum-analyzer.git
-cd discourse-forum-analyzer
-
-# Install with pip
-pip install -e .
-```
-
-### Step 2: Configuration
-
-Copy the example configuration file:
-
-```bash
-cp examples/shopify-webhooks/config.yaml config/config.yaml
-```
-
-The configuration file includes:
-
-- **Discourse API Settings**: Forum URL and category to analyze
-  - `base_url`: The Discourse forum URL (`https://community.shopify.dev`)
-  - `category_slug`: URL-friendly category name (`webhooks-and-events`)
-  - `category_id`: Numeric category identifier (18)
-
-- **Rate Limiting**: Protects against API throttling
-  - `requests_per_second`: 1.0 (respects forum API limits)
-  - `max_retries`: 3 attempts for failed requests
-  - `backoff_factor`: Exponential backoff multiplier
-
-- **Database Configuration**: Where collected data is stored
-  - `path`: SQLite database location (`data/database/forum_data.sqlite`)
-
-- **Checkpoint System**: Enables resumable data collection
-  - `enabled`: true (can resume interrupted collections)
-  - `directory`: Checkpoint file storage location
-
-- **LLM Analysis Configuration** (optional):
-  - `api_key`: Your Anthropic API key (leave empty if not using LLM features)
-  - `model`: Claude model to use (`claude-opus-4-20250514`)
-  - `batch_size`: Number of posts per analysis batch
-  - `temperature`: 0.0 for consistent, deterministic analysis
-
-**Adding Your API Key** (for LLM features):
-
-1. Get an API key from [console.anthropic.com](https://console.anthropic.com)
-2. Edit `config/config.yaml`
-3. Add your key to the `llm_analysis.api_key` field:
-   ```yaml
-   llm_analysis:
-     api_key: "sk-ant-..."  # Your actual API key here
-   ```
-
-### Step 3: Initialize Database
-
-Create the SQLite database schema:
-
-```bash
-forum-analyzer init-db
-```
-
-This creates:
-- `data/database/forum_data.sqlite` - Main database file
-- Database tables for categories, topics, posts, users, and analysis results
-
-### Step 4: Collect Forum Data
-
-Scrape the forum data:
-
-```bash
-forum-analyzer collect
-```
-
-**What happens:**
-- Fetches all topics from the Webhooks & Events category
-- Downloads each topic's posts and metadata
-- Stores data in the SQLite database
-- Creates checkpoints for resumability
-
-**Expected timing:**
-- ~5 minutes for ~100 topics with ~500 posts
-- Respects rate limits (1 request/second)
-
-**Resuming interrupted collections:**
-The tool automatically saves checkpoints. If collection is interrupted, simply run `forum-analyzer collect` again to resume from the last checkpoint.
-
-**Collection output:**
-```
-Starting collection process...
-Fetching category: webhooks-and-events
-Found 98 topics in category
-Processing topics: 100%|████████████| 98/98
-Collected 487 posts from 98 topics
-Collection complete!
-
-View collection report:
-  forum-analyzer report collection
-```
-
-### Step 5: Discover Categories (Optional but Recommended)
-
-Discover natural categories from the collected data:
-
-```bash
-forum-analyzer themes discover --min-topics 3
-```
-
-**What it does:**
-- Analyzes topics to identify common problem themes
-- Groups similar issues together
-- Creates categories based on actual forum content
-- Enables better categorization in LLM analysis
-
-**Note:** Running this before LLM analysis allows Claude to use discovered themes as categories, producing more relevant and accurate categorization than generic categories.
-
-### Step 6: LLM Analysis (Optional)
-
-Analyze the collected data with Claude using discovered categories:
-
-```bash
-forum-analyzer llm-analyze
-```
-
-**Requirements:**
-- Anthropic API key configured in `config.yaml`
-- Collected forum data in database
-
-**What it does:**
-- Uses discovered themes as categories (if themes step was run)
-- Falls back to free-form categorization if no themes exist
-- Analyzes each topic for core problems and severity
-- Identifies technical issues and patterns
-- Stores analysis in database for querying
-
-**Expected timing:**
-- ~10 minutes for ~500 posts
-- Processes posts in batches of 10
-
-**Estimated cost:**
-- ~$0.05 for this example (depends on post length and model)
-- Uses Claude Opus 4 for high-quality analysis
-
-**Analysis output:**
-```
-Starting LLM analysis...
-Processing posts: 100%|████████████| 487/487
-Analysis complete!
-
-View analysis report:
-  forum-analyzer report llm
-```
-
-### Step 7: Explore Results
-
-#### View Reports
-
-```bash
-# Collection statistics and overview
-forum-analyzer report collection
-
-# LLM analysis insights (requires llm-analyze)
-forum-analyzer report llm
-```
-
-#### Identify Common Themes
-
-```bash
-# Discover themes from analyzed topics
+# 4. Discover themes and analyze (requires API key)
 forum-analyzer themes discover
+forum-analyzer llm-analyze
 
-# List discovered themes
-forum-analyzer themes list
-
-# Delete all themes (prompts for confirmation)
-forum-analyzer themes clean
+# 5. Query results
+forum-analyzer ask "What are the most critical webhook issues?"
 ```
 
-Discovers recurring patterns like:
-- Webhook reliability issues
-- Event delivery failures
-- Rate limiting concerns
-- Authentication problems
+For the complete workflow, see the [main README's Quick Start](../../README.md#quick-start).
 
-#### Query with Natural Language
+## Step-by-Step Guide
+
+### 1. Project Setup
+
+See [Project Initialization](../../README.md#1-initialize-a-new-project) in the main README.
+
+**For this example:**
+```bash
+mkdir shopify-webhooks-analysis
+cd shopify-webhooks-analysis
+forum-analyzer init
+```
+
+Use these values when prompted:
+- **Forum URL**: `https://community.shopify.dev`
+- **Category path**: `c`
+- **Category ID**: `18`
+- **API key**: Your Anthropic key (or skip for collection-only)
+
+### 2. Data Collection
+
+See [Data Collection](../../README.md#data-collection) in the main README for all options.
 
 ```bash
-# Ask questions about the forum data
-forum-analyzer ask "What are the most common webhook problems?"
-forum-analyzer ask "Which issues are marked as urgent?"
-forum-analyzer ask "What features do developers request most?"
+forum-analyzer collect
 ```
 
-#### Direct Database Access
+**Expected for this category:**
+- ~270 topics
+- ~1,200 posts
+- ~5-10 minutes collection time
 
-The SQLite database is at `data/database/forum_data.sqlite`. You can query it directly:
+### 3. Theme Discovery
+
+See [Theme Management](../../README.md#theme-management) in the main README.
 
 ```bash
-sqlite3 data/database/forum_data.sqlite
-
-# Example queries
-SELECT COUNT(*) FROM topics;
-SELECT COUNT(*) FROM posts;
-SELECT title, view_count FROM topics ORDER BY view_count DESC LIMIT 10;
+forum-analyzer themes discover --min-topics 3
 ```
 
-**Database schema:**
-- `categories` - Forum categories
-- `topics` - Discussion threads
-- `posts` - Individual posts/replies
-- `users` - Forum participants
-- `llm_post_analyses` - LLM analysis results (if analysis was run)
+### 4. LLM Analysis
+
+See [Topic Analysis](../../README.md#topic-analysis) in the main README.
+
+```bash
+forum-analyzer llm-analyze
+```
+
+### 5. Query Results
+
+See [Querying](../../README.md#querying) in the main README.
+
+```bash
+forum-analyzer ask "What are the top webhook reliability issues?"
+forum-analyzer status  # View statistics
+```
 
 ## Results from This Example
 
@@ -298,139 +136,58 @@ From the LLM analysis of 487 posts across 98 topics:
 - Webhook timeout problems
 - Inconsistent event triggers
 
-## Customization
+## Analysis Results
 
-### Analyzing Different Categories
+This example includes pre-generated reports from analyzing the Shopify Webhooks & Events forum:
 
-To analyze a different Discourse category, update `config.yaml`:
+- **[Collection Report](COLLECTION_REPORT.md)**: 271 topics, 1,201 posts, top contributors, activity patterns
+- **[LLM Analysis Report](LLM_ANALYSIS_REPORT.md)**: 15 problem themes, severity distributions, key findings
 
-```yaml
-discourse:
-  base_url: "https://community.shopify.dev"
-  category_slug: "api-development"  # Change this
-  category_id: 12                    # And this
-```
+### Summary of Findings
 
-**Finding category ID and slug:**
-1. Visit the category page in your browser
-2. The URL format is: `https://forum.example.com/c/category-slug/ID`
-3. Example: `https://community.shopify.dev/c/webhooks-and-events/18`
-   - Slug: `webhooks-and-events`
-   - ID: `18`
+**Top Issues Identified:**
+1. Webhook delivery reliability (25.1% of topics)
+2. Configuration challenges
+3. Missing/incomplete payload fields
+4. Event timing and ordering issues
+5. Authentication and security concerns
 
-### Analyzing Different Forums
+**Severity Distribution:**
+- Critical: 18 topics (6.6%)
+- High: 67 topics (24.7%)
+- Medium: 138 topics (50.9%)
+- Low: 48 topics (17.7%)
 
-To analyze a completely different Discourse forum:
-
-```yaml
-discourse:
-  base_url: "https://discuss.example.com"  # Change the forum URL
-  category_slug: "support"
-  category_id: 5
-```
-
-### Adjusting Rate Limiting
-
-If you encounter rate limiting errors or want to be more conservative:
-
-```yaml
-rate_limiting:
-  requests_per_second: 0.5  # Slower (2 seconds between requests)
-  max_retries: 5            # More retry attempts
-  backoff_factor: 3.0       # Longer waits between retries
-```
-
-### Modifying LLM Analysis
-
-**Note**: The LLM analysis prompts are currently hardcoded in the source code. To modify them:
-
-1. Edit `src/forum_analyzer/analyzer/llm_analyzer.py`
-2. Find the `_analyze_post_batch` method
-3. Modify the system prompt and user prompt as needed
-4. Reinstall: `pip install -e .`
-
-**Future enhancement**: Configurable prompts through config file (see [known limitations](../../README.md#known-limitations))
+See the full [LLM Analysis Report](LLM_ANALYSIS_REPORT.md) for detailed insights.
 
 ## Troubleshooting
 
-### "Database is locked" Error
+For common issues, see the [main README's Troubleshooting section](../../README.md#troubleshooting).
 
-**Problem**: SQLite database is locked by another process
+**Example-specific tips:**
 
-**Solution**:
-```bash
-# Find and close any open database connections
-lsof data/database/forum_data.sqlite
+**Finding the category path and ID:**
+Visit the category in your browser: https://community.shopify.dev/c/webhooks-and-events/18
+- Category path: `c` (the part after the domain, before the category slug)
+- Category ID: `18` (the number at the end of the URL)
 
-# Or remove the lock file (if safe)
-rm data/database/forum_data.sqlite-wal
-rm data/database/forum_data.sqlite-shm
-```
+**Collection takes longer than expected:**
+The Webhooks & Events category has grown significantly. Initial collection of 270+ topics may take 10-15 minutes due to rate limiting.
 
-### "Rate limited by API" Error
-
-**Problem**: Making requests too quickly
-
-**Solution**:
-- The tool should automatically retry with backoff
-- If persisting, reduce `requests_per_second` in config
-- Wait a few minutes and try again
-
-### "Invalid API key" Error (LLM Analysis)
-
-**Problem**: Anthropic API key is missing or incorrect
-
-**Solution**:
-1. Verify your API key at [console.anthropic.com](https://console.anthropic.com)
-2. Check `config/config.yaml` has the correct key in `llm_analysis.api_key`
-3. Ensure no extra spaces or quotes around the key
-
-### Collection Interrupted
-
-**Problem**: Collection stopped before completing
-
-**Solution**:
-- Simply run `forum-analyzer collect` again
-- The checkpoint system will resume from where it left off
-- Check `data/checkpoints/` for checkpoint files
-
-### No Results from LLM Analysis
-
-**Problem**: `llm-analyze` completes but queries return no results
-
-**Solution**:
-1. Verify analysis completed: `forum-analyzer report llm`
-2. Check database: `sqlite3 data/database/forum_data.sqlite "SELECT COUNT(*) FROM llm_post_analyses;"`
-3. Re-run analysis if needed: `forum-analyzer llm-analyze --force`
-
-### Import Errors
-
-**Problem**: `ModuleNotFoundError` when running commands
-
-**Solution**:
-```bash
-# Reinstall in editable mode
-pip install -e .
-
-# Or install from requirements
-pip install -r requirements.txt
-```
+**LLM analysis costs:**
+- Expected cost: ~$0.05-0.10 for full analysis
+- Uses Claude Opus 4 (high quality, moderate cost)
+- Can be reduced by using `--limit` flag for testing
 
 ## Next Steps
 
-After completing this example:
+1. Try analyzing other Shopify categories (e.g., `api-and-sdks`, category ID 12)
+2. Set up automated weekly updates with `forum-analyzer update`
+3. Export data for external analysis: `sqlite3 forum.db .dump > backup.sql`
+4. Compare findings across multiple time periods
 
-1. **Explore the data**: Try different queries with `forum-analyzer ask`
-2. **Analyze other categories**: Update config to study different topics
-3. **Export results**: Query the database to create custom reports
-4. **Automate collection**: Set up scheduled runs to track trends over time
+## Additional Resources
 
-## Need Help?
-
-- Check the [main README](../../README.md) for additional documentation
-- Review the [project summary](.plan/PROJECT_SUMMARY.md) for architecture details
-- Open an issue on GitHub for bugs or feature requests
-
-## License
-
-This example is part of the Discourse Forum Analyzer project. See the main repository for license information.
+- [Main README](../../README.md) - Full documentation and command reference
+- [Architecture Diagram](.plan/architecture-diagram.md) - System design overview
+- [Glossary](../../README.md#appendix-glossary) - Terminology reference
