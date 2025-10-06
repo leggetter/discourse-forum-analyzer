@@ -46,56 +46,85 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -e .
 ```
 
-## Configuration
+## Quick Start
 
-Copy the example configuration:
+### 1. Initialize a New Project
+
+Create a new directory for your analysis project and initialize it:
+
 ```bash
-cp config/config.example.yaml config/config.yaml
+mkdir my-forum-analysis
+cd my-forum-analysis
+forum-analyzer init
 ```
 
-Edit `config/config.yaml` with your forum's details and your Anthropic API key:
-```yaml
-discourse:
-  base_url: "https://community.shopify.dev"
-  category_slug: "webhooks-and-events"
-  category_id: 18
+The `init` command will interactively prompt you for:
+- Discourse forum URL
+- Category path (e.g., 't' or 'c')
+- Category ID (with helpful hints; slug fetched automatically)
+- Anthropic API key (optional, can be added later)
 
-llm_analysis:
-  api_key: "your-anthropic-api-key"
-  # ... other settings
+This creates a project structure:
+```
+my-forum-analysis/
+├── config.yaml          # Your configuration
+├── forum.db            # SQLite database (created on first collect)
+├── checkpoints/        # Recovery checkpoints
+├── exports/            # Analysis reports
+└── logs/               # Application logs
 ```
 
-## Usage
-
-### Recommended Workflow
+### 2. Recommended Workflow
 
 The recommended workflow ensures the most accurate and relevant analysis by first discovering themes from your specific data.
 
 ```bash
-# 1. Initialize the database
-forum-analyzer init-db
-
-# 2. Collect forum data
+# 1. Collect forum data (initializes database automatically)
 forum-analyzer collect
 
-# 3. Discover natural categories from the data
+# 2. Discover natural categories from the data
 forum-analyzer themes discover --min-topics 3
 
-# 4. Analyze all topics using the discovered categories
+# 3. Analyze all topics using the discovered categories
 forum-analyzer llm-analyze
 
-# 5. Ask questions about your analysis
+# 4. Ask questions about your analysis
 forum-analyzer ask "What are the main authentication issues?"
 ```
+
+## Working with Multiple Projects
+
+You can work with multiple forum analysis projects by using the `--dir` flag:
+
+```bash
+# Initialize a new project in a specific directory
+mkdir shopify-webhooks
+forum-analyzer --dir shopify-webhooks init
+
+# Collect data for that project
+forum-analyzer --dir shopify-webhooks collect
+
+# Or use environment variable
+export FORUM_ANALYZER_DIR=./shopify-webhooks
+forum-analyzer collect
+```
+
+## Usage
 
 ### All Commands
 
 A full list of commands and their options are available below.
 
-#### Database Initialization
+#### Project Initialization
 ```bash
-# Creates the database schema
-forum-analyzer init-db
+# Initialize a new project in the current directory
+forum-analyzer init
+
+# Initialize in a specific directory
+forum-analyzer --dir ./my-project init
+
+# Overwrite existing configuration
+forum-analyzer init --force
 ```
 
 #### Data Collection
@@ -104,10 +133,13 @@ forum-analyzer init-db
 forum-analyzer collect
 
 # Collect from a specific category
-forum-analyzer collect --category-slug api-discussions --category-id 25
+forum-analyzer collect --category-id 25
 
 # Collect with a page limit (for testing)
 forum-analyzer collect --page-limit 2
+
+# Collect from a different project directory
+forum-analyzer --dir ./my-project collect
 ```
 
 #### Incremental Updates
@@ -217,11 +249,9 @@ discourse-forum-analyzer/
 │   ├── config/
 │   └── cli.py
 ├── config/
-│   ├── config.yaml
-│   └── config.example.yaml
-├── data/
-│   ├── database/
-│   └── checkpoints/
+│   └── cli.py
+├── examples/
+│   └── shopify-webhooks/
 └── tests/
 ```
 

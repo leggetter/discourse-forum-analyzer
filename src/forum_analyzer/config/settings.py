@@ -1,5 +1,6 @@
 """Configuration settings using Pydantic."""
 
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -110,33 +111,93 @@ class Settings(BaseSettings):
 
 
 _settings: Optional[Settings] = None
+_project_dir: Optional[Path] = None
 
 
-def get_settings(config_path: Optional[Path] = None) -> Settings:
-    """Get application settings (singleton pattern).
-
-    Args:
-        config_path: Optional path to config file
+def get_project_dir() -> Path:
+    """Get the project directory from context or environment.
 
     Returns:
-        Settings instance
+        Path to the project directory
+    """
+    global _project_dir
+
+    if _project_dir is not None:
+        return _project_dir
+
+    # Check environment variable
+    env_dir = os.getenv("FORUM_ANALYZER_DIR")
+    if env_dir:
+        return Path(env_dir).resolve()
+
+    # Default to current directory
+    return Path.cwd()
+
+
+def set_project_dir(project_dir: Path) -> None:
+    """Set the global project directory context.
+
+    Args:
+        project_dir: Path to the project directory
+    """
+    global _project_dir
+    _project_dir = project_dir.resolve()
+
+
+def reset_settings() -> None:
+    """Reset the settings singleton (useful for testing)."""
+    global _settings, _project_dir
+    _settings = None
+    _project_dir = None
+
+
+def get_settings(project_dir: Optional[Path] = None) -> Settings:
+    """Get application settings from project directory.
+
+    Args:
+        project_dir: Optional project directory (defaults to get_project_dir())
+
+    Returns:
+        Settings instance with paths resolved relative to project directory
 
     Raises:
-        FileNotFoundError: If config file doesn't exist
+        FileNotFoundError: If config file doesn't exist in project directory
     """
     global _settings
 
     if _settings is None:
-        if config_path is None:
-            config_path = Path("config/config.yaml")
+        if project_dir is None:
+            project_dir = get_project_dir()
+        else:
+            project_dir = project_dir.resolve()
+
+        config_path = project_dir / "config.yaml"
 
         if not config_path.exists():
             raise FileNotFoundError(
                 f"Configuration file not found: {config_path}\n"
-                f"Please create a config file with required settings.\n"
-                f"See config/config.example.yaml for an example."
+                f"Not a forum-analyzer project directory.\n"
+                f"Run 'forum-analyzer init' to initialize a project."
             )
 
         _settings = Settings.from_yaml(config_path)
+
+        # Resolve all paths relative to project directory
+        # Database path
+        db_url = _settings.database.url
+        if db_url.startswith("sqlite:///"):
+            db_path = db_url.replace("sqlite:///", "")
+            if not Path(db_path).is_absolute():
+                _settings.database.url = f"sqlite:///{project_dir / db_path}"
+
+        # Checkpoint directory
+        if not Path(_settings.scraping.checkpoint_dir).is_absolute():
+            _settings.scraping.checkpoint_dir = str(
+                project_dir / _settings.scraping.checkpoint_dir
+            )
+
+        # Logging file
+        if not Path(_settings.logging.file).is_absolute():
+            _settings.logging.file = str(project_dir / _settings.logging.file)
 
     return _settings

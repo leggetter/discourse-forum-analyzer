@@ -43,9 +43,6 @@ data/database/
 *.log
 logs/
 
-# Config
-config/config.yaml
-
 # Checkpoints
 data/checkpoints/*.json
 
@@ -68,6 +65,9 @@ data/checkpoints/
 # Generated reports (user-specific)
 /reports/*
 !/reports/.gitkeep
+
+# Example project config (user-specific)
+examples/shopify-webhooks/config.yaml
 
 # Temporary files (root level only)
 /test_*.py

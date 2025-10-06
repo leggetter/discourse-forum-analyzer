@@ -33,7 +33,7 @@ from forum_analyzer.collector.orchestrator import (
     collect_category,
     incremental_update,
 )
-from forum_analyzer.config.settings import get_settings
+from forum_analyzer.config.settings import get_settings, set_project_dir
 from forum_analyzer.analyzer.reporter import ForumAnalyzer
 from forum_analyzer.analyzer.llm_analyzer import LLMAnalyzer
 
@@ -146,10 +146,159 @@ def display_config(
 
 
 @click.group()
+@click.option(
+    "--dir",
+    "-d",
+    "project_dir",
+    type=click.Path(file_okay=False, dir_okay=True, path_type=Path),
+    help="Project directory (default: current directory)",
+)
 @click.version_option(version="0.1.0")
-def cli():
+@click.pass_context
+def cli(ctx, project_dir):
     """Discourse Forum Analyzer - Collect and analyze forum data."""
-    pass
+    # Ensure context object exists
+    ctx.ensure_object(dict)
+
+    # Set project directory context
+    if project_dir:
+        ctx.obj["project_dir"] = project_dir.resolve()
+        set_project_dir(project_dir)
+    else:
+        ctx.obj["project_dir"] = Path.cwd()
+        set_project_dir(Path.cwd())
+
+
+@cli.command()
+@click.option(
+    "--force",
+    "-f",
+    is_flag=True,
+    help="Overwrite existing configuration",
+)
+@click.pass_context
+def init(ctx, force):
+    """Initialize a new forum-analyzer project.
+
+    Creates a new project directory structure with configuration file,
+    database, checkpoints, and exports directories. Prompts for required
+    configuration values.
+
+    Examples:
+        forum-analyzer init
+        forum-analyzer init --dir ./my-project
+        forum-analyzer init --force  # Overwrite existing config
+    """
+    project_dir = ctx.obj["project_dir"]
+    config_path = project_dir / "config.yaml"
+
+    # Check for existing project
+    if config_path.exists() and not force:
+        console.print(
+            f"[yellow]Configuration already exists at {config_path}[/yellow]"
+        )
+        if not click.confirm(
+            "Overwrite existing configuration?", default=False
+        ):
+            console.print("[yellow]Aborted.[/yellow]")
+            return
+
+    console.print(
+        Panel.fit(
+            "[bold]Forum Analyzer Project Setup[/bold]",
+            border_style="blue",
+        )
+    )
+    console.print()
+
+    # Create directory structure
+    console.print("[dim]Creating project directories...[/dim]")
+    (project_dir / "checkpoints").mkdir(exist_ok=True)
+    (project_dir / "exports").mkdir(exist_ok=True)
+    (project_dir / "logs").mkdir(exist_ok=True)
+
+    # Interactive configuration
+    console.print("\n[bold cyan]Forum Configuration[/bold cyan]")
+    console.print("[dim]Enter your Discourse forum details[/dim]\n")
+
+    # Prompt for forum URL
+    base_url = (
+        click.prompt(
+            "Forum URL (e.g., https://community.shopify.dev)",
+            type=str,
+        )
+        .strip()
+        .rstrip("/")
+    )
+
+    # Prompt for category with helpful hints
+    console.print("\n[bold cyan]Category Selection[/bold cyan]")
+    console.print("[dim]To find the category path and ID:[/dim]")
+    console.print("[dim]1. Navigate to your category in the forum[/dim]")
+    console.print("[dim]2. Look at the URL: /{path}/category-slug/ID[/dim]")
+    console.print("[dim]   Example: /c/webhooks-and-events/18[/dim]")
+    console.print(
+        "[dim]   (The category slug will be fetched automatically)[/dim]\n"
+    )
+
+    # Prompt for category path first (required)
+    category_path = click.prompt(
+        "Category path (e.g., 'c' for standard Discourse)",
+        type=str,
+    ).strip()
+
+    category_id = click.prompt("Category ID", type=int)
+
+    # Optional: Anthropic API key
+    console.print("\n[bold cyan]AI Analysis (Optional)[/bold cyan]")
+    console.print(
+        "[dim]For AI-powered analysis, enter your Anthropic API key[/dim]"
+    )
+    console.print("[dim]Get one at: https://console.anthropic.com[/dim]")
+    console.print("[dim]Press Enter to skip (you can add it later)[/dim]\n")
+
+    api_key = click.prompt(
+        "Anthropic API key",
+        type=str,
+        default="",
+        show_default=False,
+    ).strip()
+
+    # Load template and substitute values
+    template_path = Path(__file__).parent / "config" / "config_template.yaml"
+
+    try:
+        template_content = template_path.read_text()
+
+        # Substitute template variables
+        config_content = template_content.format(
+            base_url=base_url,
+            category_id=category_id,
+            category_slug="",  # Will be fetched automatically from API
+            category_path=category_path,
+            api_key=api_key,
+        )
+
+        # Write config file
+        config_path.write_text(config_content)
+
+        # Success message
+        console.print()
+        console.print("[green]✓ Project initialized successfully![/green]")
+        console.print(f"\n[bold]Project directory:[/bold] {project_dir}")
+        console.print("\n[bold]Next steps:[/bold]")
+        console.print("1. Review and edit config.yaml if needed")
+        console.print(
+            "2. Run 'forum-analyzer collect' to start collecting data"
+        )
+        if not api_key:
+            console.print(
+                "3. Add your Anthropic API key to config.yaml for AI analysis"
+            )
+
+    except Exception as e:
+        console.print(f"\n[red]✗ Failed to create configuration: {e}[/red]")
+        sys.exit(1)
 
 
 @cli.command()
@@ -292,34 +441,8 @@ def update(category_id: int):
         sys.exit(1)
 
 
-@cli.command()
-@click.option(
-    "--force", is_flag=True, help="Force reinitialization if database exists"
-)
-@handle_config_errors
-def init_db(force: bool):
-    """Initialize the database schema.
-
-    Creates the database file and all necessary tables. Use --force to
-    reinitialize an existing database (WARNING: this will delete all data).
-
-    Examples:
-        forum-analyzer init-db
-        forum-analyzer init-db --force  # Reinitialize (deletes data!)
-    """
-    console.print(
-        Panel.fit("[bold]Database Initialization[/bold]", border_style="blue")
-    )
-    console.print()
-
-    if force:
-        if not click.confirm(
-            "⚠️  This will delete all existing data. Continue?", default=False
-        ):
-            console.print("[yellow]Aborted.[/yellow]")
-            return
-
-    init_database(force=force)
+# init-db command removed - database is now created automatically
+# Use 'forum-analyzer init' to initialize a new project
 
 
 @cli.command()
@@ -401,7 +524,7 @@ def status():
     if not db_path.exists():
         console.print(
             "[yellow]Database not found. "
-            "Run 'forum-analyzer init-db' first.[/yellow]"
+            "Run 'forum-analyzer collect' to create it.[/yellow]"
         )
         return
 

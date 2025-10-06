@@ -357,10 +357,10 @@ Current implementation requires users to manually define categories in config BE
 - Monitor database size (currently 1.62 MB)
 
 ### Backup Recommendations
-- Database: `data/database/forum.db`
-- Configuration: `config/config.yaml`
-- Reports: `.plan/reports/`
-- Checkpoints: `data/checkpoints/` (can be regenerated)
+- Database: `forum.db` (in project directory)
+- Configuration: `config.yaml` (in project directory)
+- Reports: `exports/` directory
+- Checkpoints: `checkpoints/` (can be regenerated)
 
 ### Performance Optimization
 - Current database performs well up to 10,000 topics

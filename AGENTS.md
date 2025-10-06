@@ -20,21 +20,45 @@ This project is structured as a Python CLI application. Here are the most import
         -   `orchestrator.py`: Manages the overall collection process.
     -   **`analyzer/`**: Contains the logic for LLM-based analysis.
         -   `llm_analyzer.py`: Integrates with the Claude API to perform analysis.
--   **`config/`**: Contains configuration files.
-    -   `config.example.yaml`: The template for project configuration.
--   **`data/`**: Where the collected data and database are stored. This directory is in `.gitignore`.
+    -   **`config/`**: Configuration management.
+        -   `settings.py`: Handles project-based configuration loading.
+        -   `config_template.yaml`: Template used by `init` command.
 -   **`README.md`**: The main project documentation, including setup instructions and a full command reference.
 -   **`.plan/`**: Contains detailed planning documents, including the original project plan, progress reports, and architecture diagrams.
+
+## 2.1 Project-Based Structure
+
+The tool now uses a **project-based architecture**. Each analysis project is a directory containing:
+
+```
+my-forum-project/
+├── config.yaml          # Configuration file
+├── forum.db            # SQLite database
+├── checkpoints/        # Recovery checkpoints
+├── exports/            # Analysis reports
+└── logs/               # Application logs
+```
+
+Projects are initialized with `forum-analyzer init` and all paths are relative to the project directory.
 
 ## 3. Key Concepts and Workflow
 
 The tool operates on a few key concepts:
 
+-   **Project Initialization**: Creating a new project directory with `forum-analyzer init`.
 -   **Collection**: Scraping topics and posts from a Discourse category.
 -   **Theme Discovery**: Using an LLM to find high-level themes in the collected data.
 -   **Analysis**: Using an LLM to analyze individual topics for specific problems, categories, and severity.
 
-The recommended workflow is detailed in the [`README.md`](./README.md#recommended-workflow).
+The recommended workflow is:
+
+1. **Initialize**: `forum-analyzer init` - Creates project structure and configuration
+2. **Collect**: `forum-analyzer collect` - Gathers forum data (creates database automatically)
+3. **Discover**: `forum-analyzer themes discover` - Identifies themes in the data
+4. **Analyze**: `forum-analyzer llm-analyze` - Performs LLM-based analysis
+5. **Query**: `forum-analyzer ask "question"` - Natural language queries
+
+All commands support the `--dir` flag to specify a project directory.
 
 ## 4. How to Make Changes
 
