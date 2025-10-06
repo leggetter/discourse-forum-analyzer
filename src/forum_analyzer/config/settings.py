@@ -11,7 +11,7 @@ from pydantic_settings import BaseSettings
 class APISettings(BaseSettings):
     """API configuration."""
 
-    base_url: str = "https://community.shopify.dev"
+    base_url: str
     rate_limit: float = 1.0
     timeout: float = 30.0
     max_retries: int = 3
@@ -76,7 +76,9 @@ class Settings(BaseSettings):
     scraping: ScrapingSettings = Field(default_factory=ScrapingSettings)
     categories: List[CategoryConfig] = Field(default_factory=list)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
-    llm_analysis: LLMAnalysisSettings = Field(default_factory=LLMAnalysisSettings)
+    llm_analysis: LLMAnalysisSettings = Field(
+        default_factory=LLMAnalysisSettings
+    )
 
     @classmethod
     def from_yaml(cls, config_path: Path) -> "Settings":
@@ -96,10 +98,13 @@ class Settings(BaseSettings):
             database=DatabaseSettings(**config_data.get("database", {})),
             scraping=ScrapingSettings(**config_data.get("scraping", {})),
             categories=[
-                CategoryConfig(**cat) for cat in config_data.get("categories", [])
+                CategoryConfig(**cat)
+                for cat in config_data.get("categories", [])
             ],
             logging=LoggingSettings(**config_data.get("logging", {})),
-            llm_analysis=LLMAnalysisSettings(**config_data.get("llm_analysis", {})),
+            llm_analysis=LLMAnalysisSettings(
+                **config_data.get("llm_analysis", {})
+            ),
         )
 
 
@@ -114,6 +119,9 @@ def get_settings(config_path: Optional[Path] = None) -> Settings:
 
     Returns:
         Settings instance
+
+    Raises:
+        FileNotFoundError: If config file doesn't exist
     """
     global _settings
 
@@ -121,9 +129,13 @@ def get_settings(config_path: Optional[Path] = None) -> Settings:
         if config_path is None:
             config_path = Path("config/config.yaml")
 
-        if config_path.exists():
-            _settings = Settings.from_yaml(config_path)
-        else:
-            _settings = Settings()
+        if not config_path.exists():
+            raise FileNotFoundError(
+                f"Configuration file not found: {config_path}\n"
+                f"Please create a config file with required settings.\n"
+                f"See config/config.example.yaml for an example."
+            )
+
+        _settings = Settings.from_yaml(config_path)
 
     return _settings

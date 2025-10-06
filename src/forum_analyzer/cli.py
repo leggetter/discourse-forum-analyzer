@@ -2,10 +2,12 @@
 
 import asyncio
 import sys
+from functools import wraps
 from pathlib import Path
 from typing import Optional
 
 import click
+from pydantic import ValidationError
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import (
@@ -36,6 +38,27 @@ from forum_analyzer.analyzer.reporter import ForumAnalyzer
 from forum_analyzer.analyzer.llm_analyzer import LLMAnalyzer
 
 console = Console()
+
+
+def handle_config_errors(func):
+    """Decorator to handle configuration errors gracefully."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except FileNotFoundError as e:
+            console.print(f"[red]✗ Configuration Error:[/red] {e}")
+            sys.exit(1)
+        except ValidationError as e:
+            console.print("[red]✗ Configuration Validation Error:[/red]")
+            console.print(f"[yellow]{e}[/yellow]")
+            console.print(
+                "\n[dim]Please check your config/config.yaml file.[/dim]"
+            )
+            sys.exit(1)
+
+    return wrapper
 
 
 def get_db_path() -> Path:
@@ -144,6 +167,7 @@ def cli():
     default=None,
     help="Limit number of pages to collect (for testing)",
 )
+@handle_config_errors
 def collect(
     category_slug: str,
     category_id: int,
@@ -222,6 +246,7 @@ def collect(
     help="Category slug to update",
 )
 @click.option("--category-id", default=18, type=int, help="Category ID")
+@handle_config_errors
 def update(category_slug: str, category_id: int):
     """Incrementally update existing data with new posts.
 
@@ -280,6 +305,7 @@ def update(category_slug: str, category_id: int):
 @click.option(
     "--force", is_flag=True, help="Force reinitialization if database exists"
 )
+@handle_config_errors
 def init_db(force: bool):
     """Initialize the database schema.
 
@@ -310,6 +336,7 @@ def init_db(force: bool):
     "--category-slug",
     help="Category to clear checkpoints for (clears all if not specified)",
 )
+@handle_config_errors
 def clear_checkpoints(category_slug: Optional[str]):
     """Clear checkpoints to restart collection from beginning.
 
@@ -362,6 +389,7 @@ def clear_checkpoints(category_slug: Optional[str]):
 
 
 @cli.command()
+@handle_config_errors
 def status():
     """Show collection status and database statistics.
 
@@ -486,6 +514,7 @@ def show_checkpoint_status():
     type=click.Path(),
     help="Save report to markdown file",
 )
+@handle_config_errors
 def analyze(limit: int, output: Optional[str]):
     """Analyze forum data and generate insights report.
 
@@ -550,6 +579,7 @@ def analyze(limit: int, output: Optional[str]):
     type=int,
     help="Maximum number of results to show",
 )
+@handle_config_errors
 def search(keyword: str, limit: int):
     """Search topics by keyword.
 
@@ -621,6 +651,7 @@ def search(keyword: str, limit: int):
 
 
 @cli.command()
+@handle_config_errors
 def patterns():
     """Show common error patterns detected in forum topics.
 
@@ -1100,6 +1131,7 @@ def themes_clean(force: bool):
     default=None,
     help="Maximum number of topics to include in context",
 )
+@handle_config_errors
 def ask(question: str, context_limit: Optional[int]):
     """Ask a question about the analyzed forum data.
 
