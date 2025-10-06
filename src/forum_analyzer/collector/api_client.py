@@ -45,7 +45,8 @@ class ForumAPIClient:
 
     def __init__(
         self,
-        base_url: str = "https://community.shopify.dev",
+        base_url: str,
+        category_path: str,
         rate_limit: float = 1.0,
         timeout: float = 30.0,
         max_retries: int = 3,
@@ -54,6 +55,7 @@ class ForumAPIClient:
 
         Args:
             base_url: Base URL for the forum API
+            category_path: URL path segment for categories (e.g., "c" or "t")
             rate_limit: Requests per second (default: 1.0)
             timeout: Request timeout in seconds (default: 30.0)
             max_retries: Maximum retry attempts (default: 3)
@@ -62,6 +64,7 @@ class ForumAPIClient:
         self.rate_limiter = RateLimiter(rate=rate_limit)
         self.timeout = timeout
         self.max_retries = max_retries
+        self.category_path = category_path
         self.client: Optional[httpx.AsyncClient] = None
 
     async def __aenter__(self) -> "ForumAPIClient":
@@ -83,11 +86,15 @@ class ForumAPIClient:
             await self.client.aclose()
 
     @retry(
-        retry=retry_if_exception_type((httpx.HTTPStatusError, httpx.TimeoutException)),
+        retry=retry_if_exception_type(
+            (httpx.HTTPStatusError, httpx.TimeoutException)
+        ),
         wait=wait_exponential(multiplier=1, min=2, max=60),
         stop=stop_after_attempt(3),
     )
-    async def _request(self, method: str, url: str, **kwargs) -> Dict[str, Any]:
+    async def _request(
+        self, method: str, url: str, **kwargs
+    ) -> Dict[str, Any]:
         """Make HTTP request with retry logic.
 
         Args:
@@ -134,7 +141,7 @@ class ForumAPIClient:
         Returns:
             Category page JSON data
         """
-        url = f"/c/{category_id}.json"
+        url = f"/{self.category_path}/{category_id}.json"
         params = {"page": page} if page > 0 else {}
 
         logger.info(f"Fetching category {category_id}, page {page}")
@@ -158,7 +165,9 @@ class ForumAPIClient:
 
         return data
 
-    async def fetch_category_metadata(self, category_id: int) -> Dict[str, Any]:
+    async def fetch_category_metadata(
+        self, category_id: int
+    ) -> Dict[str, Any]:
         """Fetch category metadata (first page).
 
         Args:
@@ -173,7 +182,9 @@ class ForumAPIClient:
             "id": category_id,
             "name": data.get("category", {}).get("name", ""),
             "slug": data.get("category", {}).get("slug", ""),
-            "description": data.get("category", {}).get("description_text", ""),
+            "description": data.get("category", {}).get(
+                "description_text", ""
+            ),
             "topic_count": data.get("category", {}).get("topic_count", 0),
             "post_count": data.get("category", {}).get("post_count", 0),
             "last_scraped_at": datetime.utcnow(),

@@ -15,6 +15,7 @@ class APISettings(BaseSettings):
     rate_limit: float = 1.0
     timeout: float = 30.0
     max_retries: int = 3
+    category_path: str
 
 
 class DatabaseSettings(BaseSettings):
@@ -36,8 +37,8 @@ class CategoryConfig(BaseSettings):
     """Category configuration."""
 
     id: int
-    name: str
-    slug: str
+    name: Optional[str] = None
+    slug: Optional[str] = None
 
 
 class LoggingSettings(BaseSettings):

@@ -123,7 +123,9 @@ def init_database(force: bool = False) -> None:
         sys.exit(1)
 
 
-def display_config(category_slug: str, category_id: int) -> None:
+def display_config(
+    category_id: int, category_slug: Optional[str] = None
+) -> None:
     """Display current configuration."""
     settings = get_settings()
 
@@ -133,7 +135,8 @@ def display_config(category_slug: str, category_id: int) -> None:
 
     config_table.add_row("Database", str(get_db_path()))
     config_table.add_row("Base URL", settings.api.base_url)
-    config_table.add_row("Category Slug", category_slug)
+    if category_slug:
+        config_table.add_row("Category Slug", category_slug)
     config_table.add_row("Category ID", str(category_id))
     config_table.add_row("Batch Size", str(settings.scraping.batch_size))
     config_table.add_row("Checkpoint Dir", settings.scraping.checkpoint_dir)
@@ -150,11 +153,6 @@ def cli():
 
 
 @cli.command()
-@click.option(
-    "--category-slug",
-    default="webhooks-and-events",
-    help="Category slug to collect",
-)
 @click.option("--category-id", default=18, type=int, help="Category ID")
 @click.option(
     "--resume/--no-resume",
@@ -169,7 +167,6 @@ def cli():
 )
 @handle_config_errors
 def collect(
-    category_slug: str,
     category_id: int,
     resume: bool,
     page_limit: Optional[int],
@@ -182,13 +179,13 @@ def collect(
 
     Examples:
         forum-analyzer collect
-        forum-analyzer collect --category-slug api-discussions --category-id 25
+        forum-analyzer collect --category-id 25
         forum-analyzer collect --no-resume  # Start fresh, ignore checkpoints
     """
     console.print(
         Panel.fit(
             f"[bold]Collecting Category Data[/bold]\n"
-            f"Category: {category_slug} (ID: {category_id})",
+            f"Category ID: {category_id}",
             border_style="blue",
         )
     )
@@ -202,7 +199,7 @@ def collect(
         init_database()
         console.print()
 
-    display_config(category_slug, category_id)
+    display_config(category_id)
 
     try:
         # Run the async collection function
@@ -240,14 +237,9 @@ def collect(
 
 
 @cli.command()
-@click.option(
-    "--category-slug",
-    default="webhooks-and-events",
-    help="Category slug to update",
-)
 @click.option("--category-id", default=18, type=int, help="Category ID")
 @handle_config_errors
-def update(category_slug: str, category_id: int):
+def update(category_id: int):
     """Incrementally update existing data with new posts.
 
     This command fetches only new topics and posts since the last collection,
@@ -255,12 +247,11 @@ def update(category_slug: str, category_id: int):
 
     Examples:
         forum-analyzer update
-        forum-analyzer update --category-slug api-discussions --category-id 25
+        forum-analyzer update --category-id 25
     """
     console.print(
         Panel.fit(
-            f"[bold]Incremental Update[/bold]\n"
-            f"Category: {category_slug} (ID: {category_id})",
+            f"[bold]Incremental Update[/bold]\n" f"Category ID: {category_id}",
             border_style="blue",
         )
     )
@@ -274,7 +265,7 @@ def update(category_slug: str, category_id: int):
         )
         sys.exit(1)
 
-    display_config(category_slug, category_id)
+    display_config(category_id)
 
     try:
         # Run the async update function
@@ -333,11 +324,12 @@ def init_db(force: bool):
 
 @cli.command()
 @click.option(
-    "--category-slug",
-    help="Category to clear checkpoints for (clears all if not specified)",
+    "--category-id",
+    type=int,
+    help="Category ID to clear checkpoints for (clears all if not specified)",
 )
 @handle_config_errors
-def clear_checkpoints(category_slug: Optional[str]):
+def clear_checkpoints(category_id: Optional[int]):
     """Clear checkpoints to restart collection from beginning.
 
     Removes checkpoint files to allow a fresh start. Can target a specific
@@ -345,7 +337,7 @@ def clear_checkpoints(category_slug: Optional[str]):
 
     Examples:
         forum-analyzer clear-checkpoints  # Clear all
-        forum-analyzer clear-checkpoints --category-slug webhooks-and-events
+        forum-analyzer clear-checkpoints --category-id 18
     """
     settings = get_settings()
     checkpoint_dir = Path(settings.scraping.checkpoint_dir)
@@ -355,19 +347,19 @@ def clear_checkpoints(category_slug: Optional[str]):
         return
 
     try:
-        if category_slug:
-            # Clear specific category checkpoint
-            checkpoint_file = checkpoint_dir / f"{category_slug}.json"
+        if category_id:
+            # Clear specific category checkpoint using category_id
+            checkpoint_file = checkpoint_dir / f"{category_id}.json"
             if checkpoint_file.exists():
                 checkpoint_file.unlink()
                 console.print(
                     f"[green]✓[/green] Cleared checkpoint for "
-                    f"category: {category_slug}"
+                    f"category ID: {category_id}"
                 )
             else:
                 console.print(
                     f"[yellow]No checkpoint found for "
-                    f"category: {category_slug}[/yellow]"
+                    f"category ID: {category_id}[/yellow]"
                 )
         else:
             # Clear all checkpoints

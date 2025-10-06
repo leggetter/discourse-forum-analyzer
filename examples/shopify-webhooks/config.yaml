@@ -12,11 +12,15 @@ discourse:
   
   # The category to analyze (URL-friendly slug)
   # Find this in the category URL: https://community.shopify.dev/c/webhooks-and-events/18
+  # Optional: will be fetched from API if not provided
   category_slug: "webhooks-and-events"
   
   # The numeric category ID
   # Find this in the category URL (the number at the end)
   category_id: 18
+  
+  # URL path segment for categories (use 'c' for Shopify, 't' for some other Discourse forums)
+  category_path: "c"
 
 # ============================================================================
 # Rate Limiting Configuration

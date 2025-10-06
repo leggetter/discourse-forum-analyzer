@@ -686,6 +686,7 @@ async def collect_category(
     # Initialize API client
     async with ForumAPIClient(
         base_url=settings.api.base_url,
+        category_path=settings.api.category_path,
         rate_limit=settings.api.rate_limit,
         timeout=settings.api.timeout,
         max_retries=settings.api.max_retries,

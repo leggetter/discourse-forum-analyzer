@@ -7,6 +7,7 @@ api:
   rate_limit: 1.0  # requests per second
   timeout: 30.0  # seconds
   max_retries: 3
+  category_path: "c"  # URL path segment for categories (e.g., 'c' or 't')
 
 # Database Settings
 database:
@@ -22,8 +23,8 @@ scraping:
 # Categories to scrape
 categories:
   - id: 18
-    name: "Webhooks and Events"
-    slug: "webhooks-and-events"
+    name: "Webhooks and Events"  # Optional: will be fetched from API if not provided
+    slug: "webhooks-and-events"  # Optional: will be fetched from API if not provided
     
 # Logging Settings
 logging:
