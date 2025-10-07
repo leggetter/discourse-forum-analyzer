@@ -36,8 +36,16 @@ This tool automates the collection of forum data from Discourse forums (which pr
 
 ## Installation
 
+### From PyPI (Recommended)
+
 ```bash
-git clone https://github.com/your-repo/discourse-forum-analyzer.git
+pip install forum-analyzer
+```
+
+### From Source (Development)
+
+```bash
+git clone https://github.com/leggetter/discourse-forum-analyzer.git
 cd discourse-forum-analyzer
 
 python -m venv .venv
@@ -299,6 +307,69 @@ mypy src/
 
 **Rate Limiting**
 - Adjust `rate_limit` in config.yaml (default: 1 req/sec).
+
+## Publishing to PyPI
+
+This section is for maintainers who need to publish new versions of the package to PyPI.
+
+### Prerequisites
+
+1. **PyPI Account**: Create an account at [pypi.org](https://pypi.org)
+2. **API Token**: Generate an API token from your PyPI account settings
+3. **Build Tools**: Install required packages:
+   ```bash
+   pip install build twine
+   ```
+
+### Setup API Token
+
+Store your PyPI API token in `~/.pypirc`:
+
+```ini
+[pypi]
+username = __token__
+password = pypi-YOUR-API-TOKEN-HERE
+```
+
+### Build and Publish
+
+1. **Update Version**: Bump the version in [`pyproject.toml`](pyproject.toml:4)
+   ```toml
+   version = "0.2.0"  # Update this line
+   ```
+
+2. **Clean Previous Builds**:
+   ```bash
+   rm -rf dist/ build/ *.egg-info
+   ```
+
+3. **Build Distribution**:
+   ```bash
+   python -m build
+   ```
+
+4. **Upload to PyPI**:
+   ```bash
+   twine upload dist/*
+   ```
+
+5. **Verify Upload**:
+   ```bash
+   pip install --upgrade forum-analyzer
+   forum-analyzer --version
+   ```
+
+### Version Bumping Strategy
+
+- **Patch** (0.1.0 → 0.1.1): Bug fixes, documentation updates
+- **Minor** (0.1.0 → 0.2.0): New features, backward-compatible changes
+- **Major** (0.1.0 → 1.0.0): Breaking changes, major redesigns
+
+### Package Information
+
+- **Package Name**: `forum-analyzer`
+- **PyPI URL**: https://pypi.org/project/forum-analyzer/
+- **Repository**: https://github.com/leggetter/discourse-forum-analyzer
 
 **Database Locked**
 - Only one instance can run at a time.
