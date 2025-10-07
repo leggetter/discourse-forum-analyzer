@@ -8,9 +8,9 @@ version = "0.1.0"
 description = "Shopify Developer Forum Analyzer"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
-    {name = "Forum Analyzer Team"}
+    {name = "Phil Leggetter", email = "phil@leggetter.co.uk"}
 ]
 keywords = ["shopify", "forum", "analyzer", "discourse"]
 classifiers = [
@@ -50,8 +50,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/shopify-dev-forum-analyzer"
-Repository = "https://github.com/yourusername/shopify-dev-forum-analyzer"
+Homepage = "https://github.com/leggetter/discourse-forum-analyzer"
+Repository = "https://github.com/leggetter/discourse-forum-analyzer"
 
 [tool.setuptools.packages.find]
 where = ["src"]

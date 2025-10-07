@@ -14,17 +14,16 @@ This example demonstrates analyzing the [Shopify Webhooks & Events forum](https:
 
 ## Prerequisites
 
-See the [main README](../../README.md#requirements) for installation instructions.
-
-**You'll need:**
 - Python 3.10+
 - Anthropic API key (optional, only for LLM features - costs ~$0.05 for this example)
+
+For installation instructions, see the [main README installation section](../../README.md#installation).
 
 ## Quick Start
 
 ```bash
-# 1. Install the tool
-pip install -e .
+# 1. Install the tool (if not already installed)
+pip install forum-analyzer
 
 # 2. Create and initialize project
 mkdir shopify-webhooks-analysis
@@ -48,7 +47,7 @@ forum-analyzer llm-analyze
 forum-analyzer ask "What are the most critical webhook issues?"
 ```
 
-For the complete workflow, see the [main README's Quick Start](../../README.md#quick-start).
+For detailed command documentation, see the [main README](../../README.md#usage).
 
 ## Step-by-Step Guide
 
